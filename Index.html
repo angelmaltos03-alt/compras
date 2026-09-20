@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compras y Abastecimiento · Sesión 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f9f7f3;--s1:#fff;--s2:#f2efe8;--s3:#e8e3d8;
+  --border:rgba(40,30,10,.1);--text:#1a1508;--muted:#7a6e58;
+  --a1:#1d4ed8;--a2:#b45309;--a3:#15803d;--a4:#7c3aed;
+  --red:#b91c1c;--r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.8;}
+
+/* HERO */
+.hero{background:#1a1508;color:#f9f7f3;padding:6rem 2rem 5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 60%,rgba(29,78,216,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 40%,rgba(180,83,9,.14) 0%,transparent 55%);}
+.hero-chip{display:inline-block;background:rgba(29,78,216,.18);color:#93c5fd;border:1px solid rgba(29,78,216,.3);padding:5px 18px;border-radius:100px;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;position:relative;}
+.hero h1{font-family:'Lora',serif;font-size:clamp(2rem,6vw,3.8rem);font-weight:700;line-height:1.15;margin-bottom:1rem;position:relative;}
+.hero h1 em{font-style:italic;color:#fcd34d;}
+.hero p{color:rgba(249,247,243,.6);max-width:620px;margin:0 auto 3rem;font-size:1.05rem;position:relative;}
+.hero-nav{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;}
+.hero-nav a{text-decoration:none;color:rgba(249,247,243,.7);border:1px solid rgba(255,255,255,.12);padding:8px 18px;border-radius:100px;font-size:13px;transition:all .2s;}
+.hero-nav a:hover{background:rgba(29,78,216,.25);border-color:var(--a1);color:#fff;}
+
+/* LAYOUT */
+.container{max-width:980px;margin:0 auto;padding:0 1.5rem;}
+.section{padding:5rem 0;}
+hr.sep{border:none;border-top:1px solid var(--border);}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;display:block;font-weight:600;}
+h2.title{font-family:'Lora',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;line-height:1.2;margin-bottom:1.25rem;}
+.lead{color:var(--muted);max-width:700px;font-size:1rem;}
+
+/* SECTION TAG */
+.stag{display:inline-flex;align-items:center;gap:8px;padding:.55rem 1.25rem;border-radius:var(--r);font-size:.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2rem;}
+.stag.blue{background:rgba(29,78,216,.1);color:var(--a1);border:1px solid rgba(29,78,216,.2);}
+.stag.amber{background:rgba(180,83,9,.1);color:var(--a2);border:1px solid rgba(180,83,9,.2);}
+.stag.green{background:rgba(21,128,61,.1);color:var(--a3);border:1px solid rgba(21,128,61,.2);}
+.stag.purple{background:rgba(124,58,237,.1);color:var(--a4);border:1px solid rgba(124,58,237,.2);}
+
+/* GRID / CARD */
+.grid{display:grid;gap:1.1rem;}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;transition:all .2s;}
+.card:hover{box-shadow:0 4px 20px rgba(40,30,10,.07);transform:translateY(-2px);}
+.card h3{font-size:.95rem;font-weight:600;margin-bottom:.45rem;}
+.card p{font-size:.875rem;color:var(--muted);line-height:1.65;}
+.card .ci{font-size:1.6rem;margin-bottom:.75rem;}
+
+/* ALERTS */
+.alert{border-radius:10px;padding:1rem 1.25rem;font-size:.875rem;line-height:1.65;display:flex;gap:12px;align-items:flex-start;margin-top:1.25rem;}
+.alert.blue{background:#eff6ff;border:1px solid rgba(29,78,216,.2);color:#1e3a8a;}
+.alert.amber{background:#fffbeb;border:1px solid rgba(180,83,9,.25);color:#78350f;}
+.alert.green{background:#f0fdf4;border:1px solid rgba(21,128,61,.2);color:#14532d;}
+.alert.red{background:#fef2f2;border:1px solid rgba(185,28,28,.2);color:#7f1d1d;}
+.alert.purple{background:#faf5ff;border:1px solid rgba(124,58,237,.2);color:#4c1d95;}
+.alert-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:.875rem;background:var(--s1);border-radius:var(--r);overflow:hidden;margin-top:1.25rem;}
+.data-table th{background:#1a1508;color:#f9f7f3;padding:.75rem 1.1rem;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;}
+.data-table td{padding:.75rem 1.1rem;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top;}
+.data-table td:first-child{color:var(--text);font-weight:500;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table tr:hover td{background:var(--s2);}
+.badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:11px;font-weight:700;}
+.b-ok{background:rgba(21,128,61,.12);color:#15803d;}
+.b-warn{background:rgba(180,83,9,.12);color:#b45309;}
+.b-no{background:rgba(185,28,28,.12);color:#b91c1c;}
+
+/* BLOCKQUOTE */
+.bq{font-family:'Lora',serif;font-size:1.1rem;font-style:italic;border-left:4px solid var(--a1);padding:1rem 1.5rem;background:var(--s1);border-radius:0 var(--r) var(--r) 0;margin:1.5rem 0;color:var(--muted);}
+
+/* FORMULA BOX */
+.formula-box{background:#1a1508;color:#f9f7f3;border-radius:var(--r);padding:1.5rem;margin:1.25rem 0;text-align:center;font-family:'Lora',serif;font-size:1.25rem;}
+.formula-box .fsmall{font-size:.85rem;color:rgba(249,247,243,.55);font-family:'Inter',sans-serif;margin-top:.5rem;}
+.formula-parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-top:1rem;}
+.fpart{background:var(--s2);border-radius:8px;padding:.85rem 1rem;font-size:.85rem;}
+.fpart strong{display:block;font-weight:700;margin-bottom:2px;}
+.fpart span{color:var(--muted);}
+
+/* CALCULATOR WIZARD */
+.wizard{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:2rem;}
+.wizard-header{background:#1a1508;color:#f9f7f3;padding:1.2rem 1.5rem;display:flex;align-items:center;gap:12px;}
+.wizard-header h3{font-size:.95rem;font-weight:600;}
+.wizard-body{padding:1.75rem;}
+.step-bar{display:flex;margin-bottom:2rem;border-radius:var(--r);overflow:hidden;}
+.step-seg{flex:1;padding:.55rem .5rem;text-align:center;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:var(--s2);color:var(--muted);border-right:1px solid var(--border);transition:all .3s;cursor:default;}
+.step-seg:last-child{border-right:none;}
+.step-seg.active{background:var(--a1);color:#fff;}
+.step-seg.done{background:var(--a3);color:#fff;}
+.wstep{display:none;}
+.wstep.active{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* INPUT STYLES */
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+@media(max-width:520px){.input-row{grid-template-columns:1fr;}}
+.ifield label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.ifield .hint{font-size:.78rem;color:var(--muted);margin-bottom:6px;font-style:italic;}
+.ifield input,.ifield select{width:100%;background:var(--s2);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:.95rem;outline:none;transition:border-color .2s;color:var(--text);}
+.ifield input:focus,.ifield select:focus{border-color:var(--a1);}
+.calc-btn{padding:10px 28px;background:var(--a1);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.calc-btn:hover{opacity:.85;}
+.calc-btn.green-btn{background:var(--a3);}
+
+/* RESULT PANEL */
+.result-panel{border-radius:10px;padding:1.25rem;margin-top:1.25rem;display:none;animation:fadeUp .3s ease;}
+.result-panel.show{display:block;}
+.rp-ok{background:#f0fdf4;border:1px solid rgba(21,128,61,.25);}
+.rp-warn{background:#fffbeb;border:1px solid rgba(180,83,9,.25);}
+.rp-err{background:#fef2f2;border:1px solid rgba(185,28,28,.2);}
+.result-num{font-family:'Lora',serif;font-size:2.2rem;font-weight:700;margin-bottom:.5rem;}
+.result-steps{margin-top:1rem;display:flex;flex-direction:column;gap:6px;}
+.rstep{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(0,0,0,.04);border-radius:8px;font-size:.85rem;}
+.rstep .snum{width:24px;height:24px;border-radius:50%;background:var(--a1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.rstep.highlight{background:rgba(29,78,216,.08);border-left:3px solid var(--a1);}
+
+/* ERROR FEEDBACK */
+.err-feedback{background:#fef2f2;border:1px solid rgba(185,28,28,.25);border-radius:10px;padding:1rem 1.25rem;margin-top:.75rem;font-size:.875rem;color:#7f1d1d;display:none;}
+.err-feedback.show{display:block;}
+.err-feedback strong{display:block;margin-bottom:4px;}
+
+/* FLOW ACCORDION */
+.flow{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:1.5rem;}
+.flow-item{display:flex;align-items:flex-start;gap:14px;padding:1rem 1.25rem;background:var(--s1);border-bottom:1px solid var(--border);font-size:.875rem;cursor:pointer;transition:background .15s;}
+.flow-item:last-child{border-bottom:none;}
+.flow-item:hover{background:var(--s2);}
+.flow-num{width:30px;height:30px;border-radius:50%;background:var(--a1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.flow-item h4{font-size:.9rem;font-weight:600;margin-bottom:2px;}
+.flow-item p{font-size:.82rem;color:var(--muted);}
+.flow-panel{max-height:0;overflow:hidden;transition:max-height .4s ease;background:var(--s2);}
+.flow-panel.open{max-height:400px;}
+.flow-inner{padding:1.1rem 1.25rem;font-size:.875rem;color:var(--muted);}
+.flow-inner p{margin-bottom:.5rem;}
+
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:1.5rem 0;}
+.tab{padding:8px 18px;border-radius:100px;border:1.5px solid var(--border);background:none;color:var(--muted);font-family:inherit;font-size:13px;cursor:pointer;transition:all .2s;font-weight:500;}
+.tab.active{background:var(--a1);border-color:var(--a1);color:#fff;}
+.tab-panel{display:none;animation:fadeUp .3s ease;}
+.tab-panel.active{display:block;}
+
+/* MATRIZ INTERACTIVA */
+.mtz-table{width:100%;border-collapse:collapse;font-size:.85rem;border-radius:var(--r);overflow:hidden;}
+.mtz-table th{background:#1a1508;color:#f9f7f3;padding:.7rem 1rem;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;}
+.mtz-table th:not(:first-child){text-align:center;}
+.mtz-table td{padding:.7rem 1rem;border-bottom:1px solid var(--border);background:var(--s1);}
+.mtz-table td:first-child{background:var(--s2);color:var(--text);font-weight:600;font-size:.875rem;}
+.mtz-table td:not(:first-child){text-align:center;}
+.mtz-table tr:last-child td{border-bottom:none;font-weight:700;font-size:.9rem;}
+.mtz-input{width:48px;background:var(--s2);border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:.85rem;text-align:center;outline:none;transition:border-color .2s;}
+.mtz-input:focus{border-color:var(--a1);}
+.wprod{font-weight:700;color:var(--a1);}
+.mtz-result{margin-top:1rem;padding:1rem 1.25rem;border-radius:10px;background:var(--s2);font-size:.875rem;display:none;animation:fadeUp .3s ease;}
+.mtz-result.show{display:block;}
+
+/* QUIZ */
+.quiz-wrap{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:2rem;}
+.quiz-header{padding:1.2rem 1.5rem;background:#1a1508;color:#f9f7f3;display:flex;align-items:center;gap:12px;}
+.quiz-header h3{font-size:.95rem;font-weight:600;}
+.quiz-body{padding:1.75rem;}
+.q-prog{display:flex;gap:5px;margin-bottom:1.5rem;}
+.q-dot{height:4px;flex:1;border-radius:2px;background:var(--border);transition:background .3s;}
+.q-dot.done{background:var(--a3);}
+.q-dot.active{background:var(--a1);}
+.q-scenario{background:var(--s2);border-left:4px solid var(--a2);border-radius:0 8px 8px 0;padding:1rem 1.25rem;font-size:.9rem;margin-bottom:1.25rem;}
+.q-label{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.9rem;font-weight:600;}
+.q-options{display:flex;flex-direction:column;gap:9px;margin-bottom:1.25rem;}
+.q-opt{display:flex;align-items:flex-start;gap:12px;padding:.9rem 1.1rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--s1);transition:all .15s;font-size:.875rem;}
+.q-opt:hover{border-color:rgba(29,78,216,.35);background:#eff6ff;}
+.q-opt.selected{border-color:var(--a1);background:#eff6ff;}
+.q-opt.correct{border-color:var(--a3);background:#f0fdf4;}
+.q-opt.incorrect{border-color:var(--red);background:#fef2f2;}
+.q-letter{width:26px;height:26px;border-radius:50%;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;transition:all .2s;}
+.q-opt.correct .q-letter{background:var(--a3);color:#fff;}
+.q-opt.incorrect .q-letter{background:var(--red);color:#fff;}
+.q-feedback{padding:1rem 1.25rem;border-radius:10px;font-size:.875rem;line-height:1.65;display:none;animation:fadeUp .3s ease;margin-bottom:1rem;}
+.q-feedback.show{display:block;}
+.q-feedback.fb-ok{background:#f0fdf4;border:1px solid rgba(21,128,61,.25);color:#14532d;}
+.q-feedback.fb-err{background:#fef2f2;border:1px solid rgba(185,28,28,.2);color:#7f1d1d;}
+.q-feedback strong{display:block;margin-bottom:4px;}
+.q-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.q-check{padding:9px 24px;background:var(--a1);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.q-check:disabled{opacity:.3;cursor:not-allowed;}
+.q-check:hover:not(:disabled){opacity:.85;}
+.q-next{padding:9px 24px;background:none;color:var(--a3);border:1.5px solid var(--a3);border-radius:100px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:none;transition:all .2s;}
+.q-next.show{display:inline-block;}
+.score-card{text-align:center;padding:2.5rem;display:none;animation:fadeUp .4s ease;}
+.score-card.show{display:block;}
+.score-big{font-family:'Lora',serif;font-size:6rem;font-weight:700;color:var(--a3);line-height:1;}
+.score-msg{font-size:1.1rem;font-weight:600;margin-top:.75rem;}
+.score-sub{color:var(--muted);font-size:.9rem;margin-top:.5rem;}
+.restart-btn{margin-top:1.5rem;padding:10px 28px;background:var(--a1);color:#fff;border:none;border-radius:100px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;transition:opacity .2s;}
+.restart-btn:hover{opacity:.85;}
+
+footer{background:#1a1508;color:rgba(249,247,243,.4);text-align:center;padding:2rem;font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-chip">AA-0807 · Sesión 1</div>
+  <h1>Compras y<br><em>Abastecimiento</em></h1>
+  <p>Toda fórmula explicada, paso a paso. Practica cada cálculo, recibe retroalimentación inmediata y entiende por qué los números dicen lo que dicen.</p>
+  <nav class="hero-nav">
+    <a href="#conceptos">Conceptos base</a>
+    <a href="#calc-cobertura">Cobertura</a>
+    <a href="#calc-costo">Costo total</a>
+    <a href="#calc-utilidad">Utilidad</a>
+    <a href="#calc-reorden">Punto de reorden</a>
+    <a href="#calc-riesgo">Pérdida esperada</a>
+    <a href="#calc-indicadores">Indicadores KPI</a>
+    <a href="#matriz">Matriz ponderada</a>
+    <a href="#quiz">Evaluación</a>
+  </nav>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CONCEPTOS BASE ═══ -->
+<section class="section" id="conceptos">
+<div class="container">
+  <div class="stag blue">📦 Conceptos base</div>
+  <h2 class="title">¿Qué hacen compras y abastecimiento?</h2>
+  <p class="lead">No son lo mismo. Entender la diferencia define todo lo que viene después.</p>
+
+  <div class="grid g2" style="margin-top:2rem">
+    <div class="card" style="border-top:3px solid var(--a1)">
+      <div class="ci">🛒</div>
+      <h3>Compras</h3>
+      <p>Función mediante la cual una organización <strong>adquiere bienes y servicios</strong> bajo condiciones previamente definidas (cantidad, calidad, fecha, precio, lugar).</p>
+      <p style="margin-top:.75rem;font-size:.82rem;color:var(--red)">Error común: "Comprar cable". Correcto: "Cable AWG 14, cobre, aislamiento THHN, 300 m, para el lunes."</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--a3)">
+      <div class="ci">🔄</div>
+      <h3>Abastecimiento</h3>
+      <p>Asegurar que la organización <strong>disponga de los recursos necesarios para operar</strong>, en las cantidades y momentos requeridos. Va más allá de colocar una orden.</p>
+      <p style="margin-top:.75rem;font-size:.82rem;color:var(--a3)">Incluye: anticipar necesidades, coordinar reposiciones, manejar riesgos, mantener disponibilidad.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:1.05rem;font-weight:600;margin:2.5rem 0 1rem;padding-left:1rem;border-left:3px solid var(--a1)">Precio ≠ Costo ≠ Valor — tres conceptos distintos</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h3>💰 Precio</h3>
+      <p>Lo que el proveedor cobra. Es el dato más visible y el que más se usa erróneamente como único criterio de decisión.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Costo total</h3>
+      <p>Precio + transporte + inspección + defectos esperados + almacenamiento + otros recursos consumidos. Puede ser muy diferente al precio.</p>
+    </div>
+    <div class="card">
+      <h3>⚡ Valor</h3>
+      <p>Lo que la alternativa realmente aporta, considerando beneficios, costos y riesgos en el contexto específico. Depende de la necesidad.</p>
+    </div>
+  </div>
+
+  <div class="bq" style="margin-top:2rem">"Un tornillo de dos pesos puede ser indispensable para entregar una máquina de miles de pesos."</div>
+
+  <h3 style="font-size:1.05rem;font-weight:600;margin:2.5rem 0 1rem;padding-left:1rem;border-left:3px solid var(--a2)">Los 5 correctos de una compra bien hecha</h3>
+  <div style="overflow-x:auto">
+  <table class="data-table">
+    <tr><th>Correcto</th><th>Pregunta clave</th><th>Ejemplo de error</th></tr>
+    <tr><td>✅ Calidad</td><td>¿Cumple los requisitos de uso?</td><td>Comprar lo más barato aunque no sirva para la aplicación</td></tr>
+    <tr><td>✅ Cantidad</td><td>¿Cubre la necesidad sin exceso injustificado?</td><td>Comprar 10,000 cuando se necesitan 500</td></tr>
+    <tr><td>✅ Precio y condiciones</td><td>¿La combinación económica es conveniente?</td><td>Elegir solo por precio ignorando plazo, garantía y crédito</td></tr>
+    <tr><td>✅ Momento</td><td>¿Estará disponible cuando se necesita?</td><td>Que llegue 3 días después de que lo necesitaba producción</td></tr>
+    <tr><td>✅ Lugar</td><td>¿Llegará al punto donde debe utilizarse?</td><td>Que llegue al almacén cuando se necesita en planta</td></tr>
+  </table>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 1: COBERTURA DE INVENTARIO ═══ -->
+<section class="section" id="calc-cobertura">
+<div class="container">
+  <div class="stag amber">📐 Fórmula 1</div>
+  <h2 class="title">Cobertura de inventario</h2>
+  <p class="lead">¿Cuántos días puede la empresa operar con lo que tiene en almacén? Si la respuesta es menos que el tiempo de entrega del proveedor, hay un problema.</p>
+
+  <div class="formula-box">
+    Cobertura = Inventario disponible ÷ Consumo diario
+    <div class="fsmall">Resultado en días</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>Inventario disponible</strong><span>Unidades físicamente en almacén y en buen estado, listas para usar. <em>No incluye material bloqueado, en cuarentena o dañado.</em></span></div>
+    <div class="fpart"><strong>Consumo diario</strong><span>Cuántas unidades se consumen en promedio por día (puede ser semanal o mensual, dividido entre los días del periodo).</span></div>
+    <div class="fpart"><strong>Resultado: días</strong><span>Si el resultado es menor que el lead time del proveedor, se necesita actuar hoy — no cuando se acabe el inventario.</span></div>
+  </div>
+
+  <div class="wizard" style="margin-top:2rem">
+    <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calculadora paso a paso — Cobertura</h3></div>
+    <div class="wizard-body">
+      <div class="step-bar">
+        <div class="step-seg active" id="cov-s0">Datos</div>
+        <div class="step-seg" id="cov-s1">Cálculo</div>
+        <div class="step-seg" id="cov-s2">Análisis</div>
+      </div>
+
+      <div class="wstep active" id="cov-step0">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Ingresa los datos del caso. Ejemplo del documento: panadería con 200 kg de harina, consume 50 kg/día, proveedor tarda 5 días.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Inventario disponible</label><div class="hint">Unidades, kg, litros, etc. en almacén</div><input type="number" id="cov-inv" placeholder="Ej: 200" min="0"></div>
+          <div class="ifield"><label>Consumo diario</label><div class="hint">Mismas unidades que el inventario</div><input type="number" id="cov-cons" placeholder="Ej: 50" min="0.01"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Lead time del proveedor (días)</label><div class="hint">Días desde orden hasta que llega el material</div><input type="number" id="cov-lt" placeholder="Ej: 5" min="1"></div>
+          <div class="ifield"><label>Unidad de medida</label><div class="hint">Solo para mostrar en el resultado</div><input type="text" id="cov-unit" placeholder="Ej: kg, piezas, litros"></div>
+        </div>
+        <button class="calc-btn" onclick="calcCobertura()">Calcular →</button>
+        <div class="err-feedback" id="cov-err"><strong>⚠️ Revisa los datos:</strong> <span id="cov-err-txt"></span></div>
+      </div>
+
+      <div class="wstep" id="cov-step1">
+        <p style="font-size:.875rem;font-weight:600;margin-bottom:1rem">Paso a paso del cálculo:</p>
+        <div class="result-steps" id="cov-steps"></div>
+        <button class="calc-btn green-btn" style="margin-top:1.25rem" onclick="covNext()">Ver análisis →</button>
+      </div>
+
+      <div class="wstep" id="cov-step2">
+        <div class="result-panel show" id="cov-result"></div>
+        <button class="calc-btn" style="margin-top:1.25rem;background:var(--s3);color:var(--text)" onclick="resetWizard('cov')">← Nuevo cálculo</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 2: COSTO TOTAL ═══ -->
+<section class="section" id="calc-costo">
+<div class="container">
+  <div class="stag blue">📐 Fórmula 2</div>
+  <h2 class="title">Costo total de adquisición</h2>
+  <p class="lead">Sumar solo el precio lleva a decisiones incorrectas. El costo total incluye todos los recursos que se consumen para adquirir, recibir y usar lo comprado.</p>
+
+  <div class="formula-box">
+    Costo Total = Precio + Transporte + Inspección + Defectos esperados + Almacenamiento
+    <div class="fsmall">Todos los valores deben estar en la misma base: por unidad o por lote completo. Nunca mezclar.</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>Precio</strong><span>Lo que cobra el proveedor por unidad o por lote.</span></div>
+    <div class="fpart"><strong>Transporte asignado</strong><span>Costo de flete dividido entre las unidades del pedido.</span></div>
+    <div class="fpart"><strong>Inspección adicional</strong><span>Si un proveedor requiere más revisión, ese costo es suyo aunque lo hagas tú.</span></div>
+    <div class="fpart"><strong>Costo esperado por defectos</strong><span>Probabilidad de defecto × costo de cada defecto. Es un promedio probabilístico, no una garantía.</span></div>
+    <div class="fpart"><strong>Almacenamiento asignado</strong><span>Si requiere condiciones especiales o más espacio, hay un costo real.</span></div>
+  </div>
+
+  <div class="wizard" style="margin-top:2rem">
+    <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calculadora — Costo total comparativo (2 proveedores)</h3></div>
+    <div class="wizard-body">
+      <div class="step-bar">
+        <div class="step-seg active" id="ct-s0">Proveedor A</div>
+        <div class="step-seg" id="ct-s1">Proveedor B</div>
+        <div class="step-seg" id="ct-s2">Comparativo</div>
+        <div class="step-seg" id="ct-s3">Lote completo</div>
+      </div>
+
+      <div class="wstep active" id="ct-step0">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Datos del Proveedor A (por unidad). Ejemplo del documento: Precio $100, Transporte $10, Inspección $5, Defectos $8, Almacén $4.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Precio por unidad ($)</label><input type="number" id="ctA-p" placeholder="100" min="0"></div>
+          <div class="ifield"><label>Transporte por unidad ($)</label><input type="number" id="ctA-t" placeholder="10" min="0"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Inspección adicional por unidad ($)</label><input type="number" id="ctA-i" placeholder="5" min="0"></div>
+          <div class="ifield"><label>Costo esperado por defectos ($)</label><div class="hint">= Probabilidad × Costo defecto. Ej: 4% × $200 = $8</div><input type="number" id="ctA-d" placeholder="8" min="0"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Almacenamiento por unidad ($)</label><input type="number" id="ctA-a" placeholder="4" min="0"></div>
+          <div class="ifield"><label>Unidades a comprar</label><input type="number" id="ct-qty" placeholder="500" min="1"></div>
+        </div>
+        <button class="calc-btn" onclick="ctNext(0)">Proveedor B →</button>
+        <div class="err-feedback" id="ct-errA"><strong>⚠️</strong> <span id="ct-errA-txt"></span></div>
+      </div>
+
+      <div class="wstep" id="ct-step1">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Datos del Proveedor B (por unidad). Ejemplo: Precio $108, Transporte $4, Inspección $0, Defectos $1, Almacén $2.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Precio por unidad ($)</label><input type="number" id="ctB-p" placeholder="108" min="0"></div>
+          <div class="ifield"><label>Transporte por unidad ($)</label><input type="number" id="ctB-t" placeholder="4" min="0"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Inspección adicional por unidad ($)</label><input type="number" id="ctB-i" placeholder="0" min="0"></div>
+          <div class="ifield"><label>Costo esperado por defectos ($)</label><input type="number" id="ctB-d" placeholder="1" min="0"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Almacenamiento por unidad ($)</label><input type="number" id="ctB-a" placeholder="2" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="ctNext(1)">Ver comparativo →</button>
+        <div class="err-feedback" id="ct-errB"><strong>⚠️</strong> <span id="ct-errB-txt"></span></div>
+      </div>
+
+      <div class="wstep" id="ct-step2">
+        <div class="result-steps" id="ct-steps-a"></div>
+        <div style="margin-top:1.25rem" class="result-steps" id="ct-steps-b"></div>
+        <button class="calc-btn green-btn" style="margin-top:1.25rem" onclick="ctNext(2)">Ver impacto en lote →</button>
+      </div>
+
+      <div class="wstep" id="ct-step3">
+        <div class="result-panel show" id="ct-result"></div>
+        <button class="calc-btn" style="margin-top:1.25rem;background:var(--s3);color:var(--text)" onclick="resetWizard('ct')">← Nuevo cálculo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert amber" style="margin-top:1.5rem">
+    <span class="alert-icon">💡</span>
+    <div><strong>¿Qué es el "costo esperado por defectos"?</strong> Es una estimación probabilística. Si hay 4% de probabilidad de defecto y cada defecto cuesta $200: 0.04 × $200 = $8 por unidad. No significa que todas las piezas fallarán — es el promedio distribuido entre todas las unidades bajo esos supuestos.</div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 3: COMPRAS Y UTILIDAD ═══ -->
+<section class="section" id="calc-utilidad">
+<div class="container">
+  <div class="stag green">📐 Fórmula 3</div>
+  <h2 class="title">Impacto de compras en la utilidad</h2>
+  <p class="lead">Cada peso que compras reduce en costos impacta directamente en la utilidad. Pero ¡cuidado! El ahorro debe ser real — si genera otros costos, el efecto puede ser negativo.</p>
+
+  <div class="formula-box">
+    Utilidad = Ingresos − Costos y gastos
+    <div class="fsmall">Aumento % utilidad = (Utilidad nueva − Utilidad base) ÷ Utilidad base × 100</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>Ingresos</strong><span>Total de ventas del periodo. Una reducción de costos en compras NO cambia este número.</span></div>
+    <div class="fpart"><strong>Costos y gastos</strong><span>Todo lo que la empresa gasta para operar. Las compras son parte de este bloque.</span></div>
+    <div class="fpart"><strong>Ahorro real</strong><span>Solo aplica si el ahorro en precio no genera costos adicionales (retrabajos, devoluciones, paros). Si genera $140K extra en problemas, el "ahorro" de $100K es negativo.</span></div>
+  </div>
+
+  <div class="wizard" style="margin-top:2rem">
+    <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calculadora — Efecto del ahorro en compras sobre la utilidad</h3></div>
+    <div class="wizard-body">
+      <div class="step-bar">
+        <div class="step-seg active" id="ut-s0">Base</div>
+        <div class="step-seg" id="ut-s1">Ahorro</div>
+        <div class="step-seg" id="ut-s2">Resultado</div>
+      </div>
+
+      <div class="wstep active" id="ut-step0">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Situación actual de la empresa. Ejemplo del documento: Ventas $10M, Costos $9M.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Ingresos (ventas) $</label><input type="number" id="ut-ing" placeholder="10000000" min="0"></div>
+          <div class="ifield"><label>Costos y gastos totales $</label><input type="number" id="ut-cost" placeholder="9000000" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="utNext(0)">Ingresar ahorro →</button>
+        <div class="err-feedback" id="ut-err0"><strong>⚠️</strong> <span id="ut-err0-txt"></span></div>
+      </div>
+
+      <div class="wstep" id="ut-step1">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Ahorro logrado en compras y costos adicionales que pudo haber generado. Ejemplo: ahorro $100,000, costos extra $0 (caso limpio).</p>
+        <div class="input-row">
+          <div class="ifield"><label>Ahorro logrado en compras $</label><div class="hint">Reducción real de costos del periodo</div><input type="number" id="ut-ahorro" placeholder="100000" min="0"></div>
+          <div class="ifield"><label>Costos adicionales generados $</label><div class="hint">Retrabajos, paros, devoluciones por el cambio</div><input type="number" id="ut-extra" placeholder="0" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="utNext(1)">Calcular impacto →</button>
+      </div>
+
+      <div class="wstep" id="ut-step2">
+        <div class="result-steps" id="ut-steps"></div>
+        <div class="result-panel show" id="ut-result" style="margin-top:1rem"></div>
+        <button class="calc-btn" style="margin-top:1.25rem;background:var(--s3);color:var(--text)" onclick="resetWizard('ut')">← Nuevo cálculo</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 4: PUNTO DE REORDEN ═══ -->
+<section class="section" id="calc-reorden">
+<div class="container">
+  <div class="stag amber">📐 Fórmula 4</div>
+  <h2 class="title">Punto de reorden</h2>
+  <p class="lead">No se espera a tener cero piezas para pedir más — porque durante el tiempo que tarda el proveedor, la producción sigue consumiendo. El punto de reorden dice cuándo activar la compra.</p>
+
+  <div class="formula-box">
+    PR = d × L + SS
+    <div class="fsmall">Punto de reorden = (Consumo diario × Lead time) + Inventario de seguridad</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>PR — Punto de reorden</strong><span>Nivel de inventario en el cual se debe emitir la orden. No indica cuánto comprar, sino cuándo comprar.</span></div>
+    <div class="fpart"><strong>d — Consumo diario</strong><span>Piezas, kg o unidades que se consumen en promedio cada día.</span></div>
+    <div class="fpart"><strong>L — Lead time</strong><span>Días desde que se emite la orden hasta que el material queda disponible para producción (incluye transporte, recepción, inspección).</span></div>
+    <div class="fpart"><strong>SS — Inventario de seguridad</strong><span>Colchón para absorber variaciones de demanda o retrasos del proveedor. Su tamaño debe justificarse, no elegirse por intuición.</span></div>
+  </div>
+
+  <div class="wizard" style="margin-top:2rem">
+    <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calculadora paso a paso — Punto de reorden</h3></div>
+    <div class="wizard-body">
+      <div class="step-bar">
+        <div class="step-seg active" id="pr-s0">Datos</div>
+        <div class="step-seg" id="pr-s1">Cálculo PR</div>
+        <div class="step-seg" id="pr-s2">Interpretación</div>
+      </div>
+
+      <div class="wstep active" id="pr-step0">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Ejemplo del documento: d=100 piezas/día, L=4 días, SS=150 piezas → PR = 550 piezas.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Consumo diario (d)</label><div class="hint">Unidades consumidas por día en promedio</div><input type="number" id="pr-d" placeholder="100" min="0.01"></div>
+          <div class="ifield"><label>Lead time en días (L)</label><div class="hint">Días desde orden hasta disponibilidad real</div><input type="number" id="pr-l" placeholder="4" min="1"></div>
+        </div>
+        <div class="input-row">
+          <div class="ifield"><label>Inventario de seguridad (SS)</label><div class="hint">Colchón de protección ante variaciones</div><input type="number" id="pr-ss" placeholder="150" min="0"></div>
+          <div class="ifield"><label>Unidades</label><input type="text" id="pr-unit" placeholder="Ej: piezas, kg"></div>
+        </div>
+        <button class="calc-btn" onclick="calcPR()">Calcular →</button>
+        <div class="err-feedback" id="pr-err"><strong>⚠️</strong> <span id="pr-err-txt"></span></div>
+      </div>
+
+      <div class="wstep" id="pr-step1">
+        <div class="result-steps" id="pr-steps"></div>
+        <button class="calc-btn green-btn" style="margin-top:1.25rem" onclick="prNext()">Ver interpretación →</button>
+      </div>
+
+      <div class="wstep" id="pr-step2">
+        <div class="result-panel show" id="pr-result"></div>
+        <button class="calc-btn" style="margin-top:1.25rem;background:var(--s3);color:var(--text)" onclick="resetWizard('pr')">← Nuevo cálculo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert blue" style="margin-top:1.5rem">
+    <span class="alert-icon">💡</span>
+    <div><strong>El punto de reorden NO indica cuánto comprar.</strong> Indica cuándo iniciar la reposición. La cantidad del pedido requiere otro análisis (lote económico, política de la empresa, capacidad del proveedor).</div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 5: PÉRDIDA ESPERADA ═══ -->
+<section class="section" id="calc-riesgo">
+<div class="container">
+  <div class="stag purple">📐 Fórmula 5</div>
+  <h2 class="title">Pérdida esperada por riesgo</h2>
+  <p class="lead">No todos los riesgos merecen la misma atención. La pérdida esperada combina probabilidad e impacto para expresar el riesgo en términos económicos comparables.</p>
+
+  <div class="formula-box">
+    Pérdida esperada = Probabilidad × Impacto económico
+    <div class="fsmall">Es un promedio probabilístico. Un evento poco probable pero de impacto enorme puede merecer más atención que uno probable pero menor.</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>Probabilidad</strong><span>Entre 0 (imposible) y 1 (seguro). Expresada como decimal: 10% = 0.10. Debe basarse en evidencia, no en suposición.</span></div>
+    <div class="fpart"><strong>Impacto económico</strong><span>Cuánto costaría si el evento ocurre. Incluye costos directos, indirectos, pérdida de ventas y daño a clientes.</span></div>
+    <div class="fpart"><strong>Resultado</strong><span>No es el costo seguro — es el costo promedio ponderado. Si la probabilidad baja (con inversión), la pérdida esperada baja. Eso justifica la inversión.</span></div>
+  </div>
+
+  <div class="wizard" style="margin-top:2rem">
+    <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calculadora — Análisis de riesgo y decisión de inversión</h3></div>
+    <div class="wizard-body">
+      <div class="step-bar">
+        <div class="step-seg active" id="rk-s0">Riesgo base</div>
+        <div class="step-seg" id="rk-s1">Con inversión</div>
+        <div class="step-seg" id="rk-s2">Decisión</div>
+      </div>
+
+      <div class="wstep active" id="rk-step0">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Ejemplo del documento: Probabilidad 15%, Impacto $80,000. Proveedor confiable baja la prob. a 2% con costo extra de $5,000.</p>
+        <div class="input-row">
+          <div class="ifield"><label>Probabilidad del evento (%)</label><div class="hint">Ej: 15 para 15%</div><input type="number" id="rk-prob" placeholder="15" min="0" max="100"></div>
+          <div class="ifield"><label>Impacto económico si ocurre ($)</label><input type="number" id="rk-imp" placeholder="80000" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="rkNext(0)">Siguiente →</button>
+      </div>
+
+      <div class="wstep" id="rk-step1">
+        <p style="font-size:.875rem;color:var(--muted);margin-bottom:1.25rem">Con el proveedor más confiable (o medida de mitigación), ¿cuánto baja la probabilidad y cuánto cuesta esa mejora?</p>
+        <div class="input-row">
+          <div class="ifield"><label>Nueva probabilidad con mitigación (%)</label><input type="number" id="rk-prob2" placeholder="2" min="0" max="100"></div>
+          <div class="ifield"><label>Costo de la medida de mitigación ($)</label><div class="hint">Prima de precio, inversión, seguro, etc.</div><input type="number" id="rk-costo" placeholder="5000" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="rkNext(1)">Calcular decisión →</button>
+      </div>
+
+      <div class="wstep" id="rk-step2">
+        <div class="result-steps" id="rk-steps"></div>
+        <div class="result-panel show" id="rk-result" style="margin-top:1rem"></div>
+        <button class="calc-btn" style="margin-top:1.25rem;background:var(--s3);color:var(--text)" onclick="resetWizard('rk')">← Nuevo cálculo</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ CALC 6: INDICADORES KPI ═══ -->
+<section class="section" id="calc-indicadores">
+<div class="container">
+  <div class="stag blue">📐 Fórmulas 6–10</div>
+  <h2 class="title">Indicadores de desempeño (KPI)</h2>
+  <p class="lead">Los indicadores permiten medir resultados con evidencia. Selecciona el indicador que quieres calcular.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('kpi-red',this)">% Reducción precio</button>
+    <button class="tab" onclick="switchTab('kpi-otif',this)">OTIF</button>
+    <button class="tab" onclick="switchTab('kpi-rechazo',this)">Rechazo</button>
+    <button class="tab" onclick="switchTab('kpi-lt',this)">Lead time promedio</button>
+    <button class="tab" onclick="switchTab('kpi-surt',this)">Surtimiento</button>
+  </div>
+
+  <!-- REDUCCIÓN PRECIO -->
+  <div id="tab-kpi-red" class="tab-panel active">
+    <div class="formula-box">Reducción % = (Precio base − Precio nuevo) ÷ Precio base × 100</div>
+    <div class="alert amber"><span class="alert-icon">⚠️</span><div>Solo es válido si las condiciones son equivalentes: mismo producto, misma calidad, misma cantidad, mismo plazo. Reducir $12 de $120 a $108 es 10% — pero si la calidad bajó, el "ahorro" puede ser ficticio.</div></div>
+    <div class="wizard" style="margin-top:1.5rem">
+      <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calcular reducción de precio</h3></div>
+      <div class="wizard-body">
+        <div class="input-row">
+          <div class="ifield"><label>Precio base (anterior) $</label><input type="number" id="kpi-pb" placeholder="120" min="0"></div>
+          <div class="ifield"><label>Precio nuevo $</label><input type="number" id="kpi-pn" placeholder="108" min="0"></div>
+        </div>
+        <button class="calc-btn" onclick="calcKPI('red')">Calcular</button>
+        <div class="result-panel" id="kpi-red-result"></div>
+        <div class="err-feedback" id="kpi-red-err"><strong>⚠️</strong> <span id="kpi-red-err-txt"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTIF -->
+  <div id="tab-kpi-otif" class="tab-panel">
+    <div class="formula-box">OTIF = Pedidos entregados a tiempo Y completos ÷ Total pedidos evaluados × 100</div>
+    <div class="alert blue"><span class="alert-icon">💡</span><div><strong>OTIF = On Time In Full.</strong> Un pedido que llega puntual pero incompleto NO cumple. Un pedido completo pero tardío tampoco. Deben cumplirse AMBAS condiciones simultáneamente.</div></div>
+    <div class="wizard" style="margin-top:1.5rem">
+      <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calcular OTIF</h3></div>
+      <div class="wizard-body">
+        <div class="input-row">
+          <div class="ifield"><label>Pedidos que cumplieron a tiempo Y completos</label><input type="number" id="kpi-otif-c" placeholder="42" min="0"></div>
+          <div class="ifield"><label>Total de pedidos evaluados</label><input type="number" id="kpi-otif-t" placeholder="50" min="1"></div>
+        </div>
+        <button class="calc-btn" onclick="calcKPI('otif')">Calcular</button>
+        <div class="result-panel" id="kpi-otif-result"></div>
+        <div class="err-feedback" id="kpi-otif-err"><strong>⚠️</strong> <span id="kpi-otif-err-txt"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECHAZO -->
+  <div id="tab-kpi-rechazo" class="tab-panel">
+    <div class="formula-box">Tasa de rechazo = Unidades rechazadas ÷ Unidades inspeccionadas × 100</div>
+    <div class="alert red"><span class="alert-icon">⚠️</span><div>Si se inspeccionó una muestra, el resultado corresponde a esa muestra — no puede extrapolarse automáticamente como medición del lote completo sin justificación estadística.</div></div>
+    <div class="wizard" style="margin-top:1.5rem">
+      <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calcular tasa de rechazo</h3></div>
+      <div class="wizard-body">
+        <div class="input-row">
+          <div class="ifield"><label>Unidades rechazadas</label><input type="number" id="kpi-rj-r" placeholder="40" min="0"></div>
+          <div class="ifield"><label>Unidades inspeccionadas</label><input type="number" id="kpi-rj-t" placeholder="2000" min="1"></div>
+        </div>
+        <button class="calc-btn" onclick="calcKPI('rechazo')">Calcular</button>
+        <div class="result-panel" id="kpi-rechazo-result"></div>
+        <div class="err-feedback" id="kpi-rechazo-err"><strong>⚠️</strong> <span id="kpi-rechazo-err-txt"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEAD TIME -->
+  <div id="tab-kpi-lt" class="tab-panel">
+    <div class="formula-box">Lead time promedio = Suma de días de cada pedido ÷ Número de pedidos</div>
+    <div class="alert amber"><span class="alert-icon">💡</span><div>El promedio puede ocultar variabilidad importante. Pedidos de 1, 5 y 9 días tienen promedio de 5 — igual que tres pedidos de 5 días. Pero la predictibilidad es muy diferente.</div></div>
+    <div class="wizard" style="margin-top:1.5rem">
+      <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calcular lead time promedio</h3></div>
+      <div class="wizard-body">
+        <div class="ifield" style="margin-bottom:1.25rem"><label>Lead times de cada pedido (días separados por coma)</label><div class="hint">Ej: 4, 5, 6 — o hasta 10 valores</div><input type="text" id="kpi-lt-vals" placeholder="4, 5, 6"></div>
+        <button class="calc-btn" onclick="calcKPI('lt')">Calcular</button>
+        <div class="result-panel" id="kpi-lt-result"></div>
+        <div class="err-feedback" id="kpi-lt-err"><strong>⚠️</strong> <span id="kpi-lt-err-txt"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SURTIMIENTO -->
+  <div id="tab-kpi-surt" class="tab-panel">
+    <div class="formula-box">Nivel de surtimiento = Unidades atendidas inmediatamente ÷ Unidades solicitadas × 100</div>
+    <div class="alert blue"><span class="alert-icon">💡</span><div>"Nivel de servicio" puede tener otras definiciones según el sistema. Siempre especificar cuál se usa para que el indicador sea comparable entre periodos.</div></div>
+    <div class="wizard" style="margin-top:1.5rem">
+      <div class="wizard-header"><span style="font-size:1.4rem">🧮</span><h3>Calcular nivel de surtimiento</h3></div>
+      <div class="wizard-body">
+        <div class="input-row">
+          <div class="ifield"><label>Unidades atendidas inmediatamente</label><input type="number" id="kpi-su-a" placeholder="950" min="0"></div>
+          <div class="ifield"><label>Unidades solicitadas</label><input type="number" id="kpi-su-s" placeholder="1000" min="1"></div>
+        </div>
+        <button class="calc-btn" onclick="calcKPI('surt')">Calcular</button>
+        <div class="result-panel" id="kpi-surt-result"></div>
+        <div class="err-feedback" id="kpi-surt-err"><strong>⚠️</strong> <span id="kpi-surt-err-txt"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ MATRIZ PONDERADA ═══ -->
+<section class="section" id="matriz">
+<div class="container">
+  <div class="stag purple">📐 Herramienta</div>
+  <h2 class="title">Matriz de evaluación ponderada</h2>
+  <p class="lead">Evalúa tres proveedores en seis criterios. Cambia las calificaciones y el sistema recalcula automáticamente. Los pesos ya están definidos — pero abajo se explica cada parte de la fórmula.</p>
+
+  <div class="formula-box">
+    Puntuación = Σ (peso<sub>i</sub> × calificación<sub>i</sub>)
+    <div class="fsmall">Sumar el producto de cada calificación por su peso. Los pesos deben sumar 100%. Una calificación mayor siempre debe significar condición más favorable.</div>
+  </div>
+
+  <div class="formula-parts">
+    <div class="fpart"><strong>Peso (w)</strong><span>Importancia relativa del criterio. Lo define la organización según su estrategia. El mismo proveedor puede ganar o perder si cambias los pesos.</span></div>
+    <div class="fpart"><strong>Calificación (c)</strong><span>Del 1 al 10. Debe tener reglas previas: ¿qué puntaje corresponde a cada nivel de precio, porcentaje de rechazo, días de entrega?</span></div>
+    <div class="fpart"><strong>Puntuación ponderada</strong><span>Resulta de multiplicar c × w para cada criterio y sumar. Un proveedor puede tener precio bajo (alto puntaje en precio) pero bajo puntaje en entrega.</span></div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:1.5rem">
+  <table class="mtz-table">
+    <tr>
+      <th>Criterio</th><th>Peso</th>
+      <th>Calif. A</th><th>Pond. A</th>
+      <th>Calif. B</th><th>Pond. B</th>
+      <th>Calif. C</th><th>Pond. C</th>
+    </tr>
+    <tr>
+      <td>💰 Precio</td><td>25%</td>
+      <td><input class="mtz-input" id="mA1" value="8" oninput="calcMtz()"></td><td class="wprod" id="wA1">2.00</td>
+      <td><input class="mtz-input" id="mB1" value="10" oninput="calcMtz()"></td><td class="wprod" id="wB1">2.50</td>
+      <td><input class="mtz-input" id="mC1" value="9" oninput="calcMtz()"></td><td class="wprod" id="wC1">2.25</td>
+    </tr>
+    <tr>
+      <td>🎯 Calidad</td><td>25%</td>
+      <td><input class="mtz-input" id="mA2" value="10" oninput="calcMtz()"></td><td class="wprod" id="wA2">2.50</td>
+      <td><input class="mtz-input" id="mB2" value="7" oninput="calcMtz()"></td><td class="wprod" id="wB2">1.75</td>
+      <td><input class="mtz-input" id="mC2" value="9" oninput="calcMtz()"></td><td class="wprod" id="wC2">2.25</td>
+    </tr>
+    <tr>
+      <td>🚚 Entrega</td><td>20%</td>
+      <td><input class="mtz-input" id="mA3" value="10" oninput="calcMtz()"></td><td class="wprod" id="wA3">2.00</td>
+      <td><input class="mtz-input" id="mB3" value="5" oninput="calcMtz()"></td><td class="wprod" id="wB3">1.00</td>
+      <td><input class="mtz-input" id="mC3" value="9" oninput="calcMtz()"></td><td class="wprod" id="wC3">1.80</td>
+    </tr>
+    <tr>
+      <td>⚡ Capacidad</td><td>15%</td>
+      <td><input class="mtz-input" id="mA4" value="10" oninput="calcMtz()"></td><td class="wprod" id="wA4">1.50</td>
+      <td><input class="mtz-input" id="mB4" value="7" oninput="calcMtz()"></td><td class="wprod" id="wB4">1.05</td>
+      <td><input class="mtz-input" id="mC4" value="9" oninput="calcMtz()"></td><td class="wprod" id="wC4">1.35</td>
+    </tr>
+    <tr>
+      <td>💳 Crédito</td><td>10%</td>
+      <td><input class="mtz-input" id="mA5" value="10" oninput="calcMtz()"></td><td class="wprod" id="wA5">1.00</td>
+      <td><input class="mtz-input" id="mB5" value="5" oninput="calcMtz()"></td><td class="wprod" id="wB5">0.50</td>
+      <td><input class="mtz-input" id="mC5" value="8" oninput="calcMtz()"></td><td class="wprod" id="wC5">0.80</td>
+    </tr>
+    <tr>
+      <td>🛡️ Riesgo</td><td>5%</td>
+      <td><input class="mtz-input" id="mA6" value="9" oninput="calcMtz()"></td><td class="wprod" id="wA6">0.45</td>
+      <td><input class="mtz-input" id="mB6" value="6" oninput="calcMtz()"></td><td class="wprod" id="wB6">0.30</td>
+      <td><input class="mtz-input" id="mC6" value="8" oninput="calcMtz()"></td><td class="wprod" id="wC6">0.40</td>
+    </tr>
+    <tr>
+      <td><strong>TOTAL</strong></td><td>100%</td>
+      <td colspan="2" style="text-align:center"><span style="font-size:1.1rem;font-weight:700;color:var(--a1)" id="totA">9.45</span></td>
+      <td colspan="2" style="text-align:center"><span style="font-size:1.1rem;font-weight:700;color:var(--a2)" id="totB">7.10</span></td>
+      <td colspan="2" style="text-align:center"><span style="font-size:1.1rem;font-weight:700;color:var(--a3)" id="totC">8.85</span></td>
+    </tr>
+  </table>
+  </div>
+  <div class="mtz-result" id="mtz-result"></div>
+
+  <div class="alert amber" style="margin-top:1rem">
+    <span class="alert-icon">⚠️</span>
+    <div><strong>La matriz organiza el juicio — no lo reemplaza.</strong> Si un proveedor incumple un requisito obligatorio (como el plazo de entrega), puede quedar fuera aunque tenga alta puntuación. Un requisito excluyente no se compensa con puntaje en otros criterios.</div>
+  </div>
+</div>
+</section>
+
+<hr class="sep">
+
+<!-- ═══ QUIZ ═══ -->
+<section class="section" id="quiz">
+<div class="container">
+  <div class="stag green">🧠 Evaluación</div>
+  <h2 class="title">Evaluación — Sesión 1</h2>
+  <p class="lead">6 preguntas integradoras. Si te equivocas, sabrás exactamente en qué parte de la fórmula o del razonamiento está el error.</p>
+
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <span style="font-size:1.5rem">📋</span>
+      <h3>Evaluación · Compras y Abastecimiento · Sesión 1</h3>
+      <span style="margin-left:auto;font-size:11px;color:rgba(249,247,243,.4)">6 preguntas</span>
+    </div>
+    <div class="quiz-body" id="quiz-body">
+      <div class="q-prog" id="q-prog">
+        <div class="q-dot active" id="qd0"></div>
+        <div class="q-dot" id="qd1"></div>
+        <div class="q-dot" id="qd2"></div>
+        <div class="q-dot" id="qd3"></div>
+        <div class="q-dot" id="qd4"></div>
+        <div class="q-dot" id="qd5"></div>
+      </div>
+      <div id="q-container"></div>
+      <div class="score-card" id="score-card">
+        <div class="score-big" id="score-big">—</div>
+        <div class="score-msg" id="score-msg"></div>
+        <div class="score-sub" id="score-sub"></div>
+        <button class="restart-btn" onclick="restartQuiz()">Intentar de nuevo</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <p>Administración de Compras y Abastecimiento · AA-0807 · Sesión 1</p>
+  <p style="margin-top:4px">Fórmulas explicadas paso a paso · Calculadoras interactivas · Retroalimentación inmediata</p>
+</footer>
+
+<script>
+// ═══ TABS ═══
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ═══ WIZARD HELPERS ═══
+function setStep(prefix, step, total){
+  for(let i=0;i<total;i++){
+    const seg=document.getElementById(prefix+'-s'+i);
+    const pnl=document.getElementById(prefix+'-step'+i);
+    if(!seg||!pnl)continue;
+    seg.classList.remove('active','done');
+    pnl.classList.remove('active');
+    if(i<step){seg.classList.add('done');}
+    else if(i===step){seg.classList.add('active');pnl.classList.add('active');}
+  }
+}
+function resetWizard(prefix){
+  const total=document.querySelectorAll(`[id^="${prefix}-step"]`).length;
+  document.querySelectorAll(`[id^="${prefix}-step"] .result-panel`).forEach(r=>{r.classList.remove('show');});
+  document.querySelectorAll(`[id^="${prefix}-"] .err-feedback`).forEach(e=>e.classList.remove('show'));
+  setStep(prefix,0,total);
+}
+function showErr(id,txt){
+  const el=document.getElementById(id);
+  document.getElementById(id+'-txt').textContent=txt;
+  el.classList.add('show');
+}
+function hideErr(id){document.getElementById(id).classList.remove('show');}
+function mkStep(num,txt,highlight=false){
+  return `<div class="rstep${highlight?' highlight':''}"><div class="snum">${num}</div><span>${txt}</span></div>`;
+}
+
+// ═══ COBERTURA ═══
+let covData={};
+function calcCobertura(){
+  const inv=parseFloat(document.getElementById('cov-inv').value);
+  const cons=parseFloat(document.getElementById('cov-cons').value);
+  const lt=parseFloat(document.getElementById('cov-lt').value);
+  const unit=document.getElementById('cov-unit').value||'unidades';
+  hideErr('cov-err');
+  if(isNaN(inv)||inv<0){showErr('cov-err','El inventario debe ser un número ≥ 0.');return;}
+  if(isNaN(cons)||cons<=0){showErr('cov-err','El consumo diario debe ser mayor a cero.');return;}
+  if(isNaN(lt)||lt<1){showErr('cov-err','El lead time debe ser al menos 1 día.');return;}
+  const cob=inv/cons;
+  covData={inv,cons,lt,unit,cob};
+  const s=document.getElementById('cov-steps');
+  s.innerHTML=
+    mkStep(1,`Fórmula: Cobertura = Inventario disponible ÷ Consumo diario`)+
+    mkStep(2,`Cobertura = ${inv} ${unit} ÷ ${cons} ${unit}/día`)+
+    mkStep(3,`Cobertura = <strong>${cob.toFixed(2)} días</strong>`,true)+
+    mkStep(4,`Lead time del proveedor: ${lt} días`);
+  setStep('cov',1,3);
+}
+function covNext(){
+  const {inv,cons,lt,unit,cob}=covData;
+  const el=document.getElementById('cov-result');
+  let cls,html;
+  if(cob>=lt){
+    cls='rp-ok';
+    html=`<div class="result-num" style="color:var(--a3)">${cob.toFixed(2)} días ✅</div>
+    <p style="margin-top:.5rem"><strong>Inventario suficiente.</strong> La cobertura (${cob.toFixed(2)} días) supera el lead time (${lt} días) en <strong>${(cob-lt).toFixed(2)} días</strong> de margen.</p>
+    <p style="margin-top:.5rem;font-size:.85rem;color:var(--muted)">Ese margen equivale a un inventario adicional de ${((cob-lt)*cons).toFixed(0)} ${unit} — que actúa como buffer de seguridad.</p>`;
+  } else {
+    cls='rp-err';
+    const deficit=(lt-cob)*cons;
+    html=`<div class="result-num" style="color:var(--red)">${cob.toFixed(2)} días ⚠️</div>
+    <p style="margin-top:.5rem"><strong>Problema de abastecimiento.</strong> La cobertura (${cob.toFixed(2)} días) es menor que el lead time (${lt} días).</p>
+    <p style="margin-top:.5rem;font-size:.85rem;color:var(--red)">Habrá aproximadamente <strong>${(lt-cob).toFixed(2)} días</strong> sin material — lo que representa un faltante de ~${deficit.toFixed(0)} ${unit}.</p>
+    <p style="margin-top:.5rem;font-size:.85rem;color:var(--muted)">Acción: emitir la orden hoy no resuelve el problema completamente. Hay que buscar entrega urgente, fuente alterna o ajustar temporalmente la operación.</p>`;
+  }
+  el.className=`result-panel show ${cls}`;
+  el.innerHTML=html;
+  setStep('cov',2,3);
+}
+
+// ═══ COSTO TOTAL ═══
+let ctDataA={},ctDataB={},ctQty=0;
+function ctNext(step){
+  if(step===0){
+    const p=parseFloat(document.getElementById('ctA-p').value);
+    const t=parseFloat(document.getElementById('ctA-t').value)||0;
+    const i=parseFloat(document.getElementById('ctA-i').value)||0;
+    const d=parseFloat(document.getElementById('ctA-d').value)||0;
+    const a=parseFloat(document.getElementById('ctA-a').value)||0;
+    const q=parseFloat(document.getElementById('ct-qty').value);
+    hideErr('ct-errA');
+    if(isNaN(p)||p<0){showErr('ct-errA','Ingresa un precio válido para el Proveedor A.');return;}
+    if(isNaN(q)||q<1){showErr('ct-errA','La cantidad debe ser al menos 1 unidad.');return;}
+    ctDataA={p,t,i,d,a,total:p+t+i+d+a};ctQty=q;
+    setStep('ct',1,4);
+  } else if(step===1){
+    const p=parseFloat(document.getElementById('ctB-p').value);
+    const t=parseFloat(document.getElementById('ctB-t').value)||0;
+    const i=parseFloat(document.getElementById('ctB-i').value)||0;
+    const d=parseFloat(document.getElementById('ctB-d').value)||0;
+    const a=parseFloat(document.getElementById('ctB-a').value)||0;
+    hideErr('ct-errB');
+    if(isNaN(p)||p<0){showErr('ct-errB','Ingresa un precio válido para el Proveedor B.');return;}
+    ctDataB={p,t,i,d,a,total:p+t+i+d+a};
+    const sa=document.getElementById('ct-steps-a');
+    const sb=document.getElementById('ct-steps-b');
+    sa.innerHTML=`<p style="font-weight:600;margin-bottom:.5rem;color:var(--a1)">Proveedor A (por unidad):</p>`+
+      mkStep('A1',`Precio: $${ctDataA.p}`)+
+      mkStep('A2',`+ Transporte: $${ctDataA.t}`)+
+      mkStep('A3',`+ Inspección: $${ctDataA.i}`)+
+      mkStep('A4',`+ Defectos esperados: $${ctDataA.d}`)+
+      mkStep('A5',`+ Almacenamiento: $${ctDataA.a}`)+
+      mkStep('A6',`= Costo total unitario A: <strong>$${ctDataA.total.toFixed(2)}</strong>`,true);
+    sb.innerHTML=`<p style="font-weight:600;margin-bottom:.5rem;color:var(--a2)">Proveedor B (por unidad):</p>`+
+      mkStep('B1',`Precio: $${ctDataB.p}`)+
+      mkStep('B2',`+ Transporte: $${ctDataB.t}`)+
+      mkStep('B3',`+ Inspección: $${ctDataB.i}`)+
+      mkStep('B4',`+ Defectos esperados: $${ctDataB.d}`)+
+      mkStep('B5',`+ Almacenamiento: $${ctDataB.a}`)+
+      mkStep('B6',`= Costo total unitario B: <strong>$${ctDataB.total.toFixed(2)}</strong>`,true);
+    setStep('ct',2,4);
+  } else if(step===2){
+    const loteA=ctDataA.total*ctQty;
+    const loteB=ctDataB.total*ctQty;
+    const diff=Math.abs(loteA-loteB);
+    const winner=loteA<loteB?'A':'B';
+    const loser=winner==='A'?'B':'A';
+    const winTotal=loteA<loteB?loteA:loteB;
+    const losTotal=loteA<loteB?loteB:loteA;
+    const el=document.getElementById('ct-result');
+    el.className=`result-panel show ${winner==='A'?'rp-ok':'rp-warn'}`;
+    el.innerHTML=`
+      <div class="result-steps">
+        ${mkStep(1,`Lote A = $${ctDataA.total.toFixed(2)} × ${ctQty} unidades = $${loteA.toLocaleString('es-MX',{minimumFractionDigits:2})}`)}
+        ${mkStep(2,`Lote B = $${ctDataB.total.toFixed(2)} × ${ctQty} unidades = $${loteB.toLocaleString('es-MX',{minimumFractionDigits:2})}`)}
+        ${mkStep(3,`Diferencia = $${diff.toLocaleString('es-MX',{minimumFractionDigits:2})} a favor de Proveedor ${winner}`,true)}
+      </div>
+      <div style="margin-top:1rem;padding:1rem;background:rgba(0,0,0,.04);border-radius:8px;font-size:.875rem">
+        <strong>Conclusión:</strong> Aunque el Proveedor ${loser} tiene ${winner==='A'?'mayor':'menor'} precio unitario ($${(winner==='A'?ctDataB.p:ctDataA.p)}), su <strong>costo total es $${diff.toFixed(2)} ${loser==='A'?'mayor':'menor'} por unidad</strong>. En ${ctQty} unidades, la diferencia es <strong>$${diff.toFixed(2)*ctQty>=0?diff.toFixed(0):diff.toFixed(0)}</strong> en total. Elegir solo por precio habría llevado a la decisión incorrecta.
+      </div>`;
+    setStep('ct',3,4);
+  }
+}
+
+// ═══ UTILIDAD ═══
+let utIng=0,utCost=0;
+function utNext(step){
+  if(step===0){
+    const ing=parseFloat(document.getElementById('ut-ing').value);
+    const cost=parseFloat(document.getElementById('ut-cost').value);
+    hideErr('ut-err0');
+    if(isNaN(ing)||ing<=0){showErr('ut-err0','Ingresa los ingresos.');return;}
+    if(isNaN(cost)||cost<0){showErr('ut-err0','Ingresa los costos.');return;}
+    if(cost>=ing){showErr('ut-err0','Con estos datos la empresa ya tiene pérdida. Verifica los números.');return;}
+    utIng=ing;utCost=cost;
+    setStep('ut',1,3);
+  } else if(step===1){
+    const ah=parseFloat(document.getElementById('ut-ahorro').value)||0;
+    const ex=parseFloat(document.getElementById('ut-extra').value)||0;
+    const utBase=utIng-utCost;
+    const ahorroNeto=ah-ex;
+    const nuevoCost=utCost-ahorroNeto;
+    const utNueva=utIng-nuevoCost;
+    const cambio=utNueva-utBase;
+    const pct=(cambio/utBase)*100;
+    const f=n=>n.toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0});
+    const steps=document.getElementById('ut-steps');
+    steps.innerHTML=
+      mkStep(1,`Utilidad base = Ingresos − Costos = $${f(utIng)} − $${f(utCost)} = $${f(utBase)}`)+
+      mkStep(2,`Ahorro neto en compras = $${f(ah)} − $${f(ex)} (costos extra) = $${f(ahorroNeto)}`)+
+      mkStep(3,`Nuevos costos = $${f(utCost)} − $${f(ahorroNeto)} = $${f(nuevoCost)}`)+
+      mkStep(4,`Nueva utilidad = $${f(utIng)} − $${f(nuevoCost)} = $${f(utNueva)}`,true)+
+      mkStep(5,`Cambio en utilidad = ($${f(utNueva)} − $${f(utBase)}) ÷ $${f(utBase)} × 100 = ${pct.toFixed(1)}%`,true);
+    const el=document.getElementById('ut-result');
+    if(ahorroNeto>0){
+      el.className='result-panel show rp-ok';
+      el.innerHTML=`<strong>✅ Ahorro real de $${f(ahorroNeto)}.</strong> La utilidad pasó de $${f(utBase)} a $${f(utNueva)} — un incremento del <strong>${pct.toFixed(1)}%</strong>. Cada peso ahorrado en compras impacta directamente en utilidad.`;
+    } else if(ahorroNeto===0){
+      el.className='result-panel show rp-warn';
+      el.innerHTML=`<strong>⚠️ El ahorro se canceló con los costos adicionales.</strong> El "ahorro" en precio fue idéntico a los costos que generó. La utilidad no cambió — y el esfuerzo no produjo beneficio neto.`;
+    } else {
+      el.className='result-panel show rp-err';
+      el.innerHTML=`<strong>❌ La utilidad bajó $${f(Math.abs(cambio))} (${Math.abs(pct).toFixed(1)}%).</strong> Los costos adicionales ($${f(ex)}) superaron el ahorro en precio ($${f(ah)}). Efecto neto: <strong>$${f(ahorroNeto)}</strong>. La decisión de compra fue económicamente negativa aunque el precio bajó.`;
+    }
+    setStep('ut',2,3);
+  }
+}
+
+// ═══ PUNTO DE REORDEN ═══
+let prData={};
+function calcPR(){
+  const d=parseFloat(document.getElementById('pr-d').value);
+  const l=parseFloat(document.getElementById('pr-l').value);
+  const ss=parseFloat(document.getElementById('pr-ss').value)||0;
+  const unit=document.getElementById('pr-unit').value||'unidades';
+  hideErr('pr-err');
+  if(isNaN(d)||d<=0){showErr('pr-err','El consumo diario debe ser mayor a cero.');return;}
+  if(isNaN(l)||l<1){showErr('pr-err','El lead time debe ser al menos 1 día.');return;}
+  const pr=d*l+ss;
+  prData={d,l,ss,unit,pr};
+  const s=document.getElementById('pr-steps');
+  s.innerHTML=
+    mkStep(1,`Fórmula: PR = d × L + SS`)+
+    mkStep(2,`Consumo durante lead time = ${d} ${unit}/día × ${l} días = ${(d*l).toFixed(0)} ${unit}`)+
+    mkStep(3,`+ Inventario de seguridad = ${ss} ${unit}`)+
+    mkStep(4,`PR = ${(d*l).toFixed(0)} + ${ss} = <strong>${pr.toFixed(0)} ${unit}</strong>`,true);
+  setStep('pr',1,3);
+}
+function prNext(){
+  const {d,l,ss,unit,pr}=prData;
+  const el=document.getElementById('pr-result');
+  el.className='result-panel show rp-ok';
+  el.innerHTML=`
+    <div class="result-num" style="color:var(--a1)">${pr.toFixed(0)} ${unit}</div>
+    <p style="margin-top:.5rem"><strong>Punto de reorden:</strong> cuando el inventario llegue a <strong>${pr.toFixed(0)} ${unit}</strong>, se debe emitir la orden de compra.</p>
+    <p style="margin-top:.75rem;font-size:.85rem;color:var(--muted)"><strong>¿Por qué no esperar a cero?</strong> Porque durante los ${l} días de lead time se consumirán ${(d*l).toFixed(0)} ${unit}. Si el inventario baja de ${pr.toFixed(0)} antes de emitir la orden, habrá un faltante.</p>
+    <p style="margin-top:.5rem;font-size:.85rem;color:var(--muted)"><strong>El inventario de seguridad (${ss} ${unit})</strong> cubre variaciones: si el proveedor llega un día tarde o el consumo fue mayor de lo esperado.</p>
+    <div style="margin-top:.75rem;padding:.75rem 1rem;background:rgba(180,83,9,.08);border-radius:8px;font-size:.82rem;color:#78350f">⚠️ El punto de reorden dice <em>cuándo</em> pedir — no <em>cuánto</em>. La cantidad del pedido requiere otro análisis.</div>`;
+  setStep('pr',2,3);
+}
+
+// ═══ RIESGO ═══
+let rkProb=0,rkImp=0;
+function rkNext(step){
+  if(step===0){
+    const p=parseFloat(document.getElementById('rk-prob').value);
+    const i=parseFloat(document.getElementById('rk-imp').value);
+    if(isNaN(p)||p<0||p>100||isNaN(i)||i<0){alert('Ingresa valores válidos.');return;}
+    rkProb=p;rkImp=i;
+    setStep('rk',1,3);
+  } else if(step===1){
+    const p2=parseFloat(document.getElementById('rk-prob2').value);
+    const c=parseFloat(document.getElementById('rk-costo').value)||0;
+    if(isNaN(p2)||p2<0||p2>100){alert('Ingresa la nueva probabilidad.');return;}
+    const pe1=(rkProb/100)*rkImp;
+    const pe2=(p2/100)*rkImp;
+    const reduccion=pe1-pe2;
+    const beneficioNeto=reduccion-c;
+    const f=n=>n.toLocaleString('es-MX',{minimumFractionDigits:0,maximumFractionDigits:0});
+    const s=document.getElementById('rk-steps');
+    s.innerHTML=
+      mkStep(1,`Pérdida esperada base = ${rkProb}% × $${f(rkImp)} = ${rkProb/100} × $${f(rkImp)} = $${f(pe1)}`)+
+      mkStep(2,`Pérdida esperada con mitigación = ${p2}% × $${f(rkImp)} = $${f(pe2)}`)+
+      mkStep(3,`Reducción en pérdida esperada = $${f(pe1)} − $${f(pe2)} = $${f(reduccion)}`)+
+      mkStep(4,`Costo de la medida: $${f(c)}`)+
+      mkStep(5,`Beneficio neto = $${f(reduccion)} − $${f(c)} = $${f(beneficioNeto)}`,true);
+    const el=document.getElementById('rk-result');
+    if(beneficioNeto>0){
+      el.className='result-panel show rp-ok';
+      el.innerHTML=`<strong>✅ La inversión se justifica.</strong> Pagar $${f(c)} adicionales reduce la pérdida esperada en $${f(reduccion)}, con un beneficio neto de <strong>$${f(beneficioNeto)}</strong> bajo los supuestos utilizados.`;
+    } else {
+      el.className='result-panel show rp-warn';
+      el.innerHTML=`<strong>⚠️ La inversión no se justifica con estos supuestos.</strong> La reducción en pérdida esperada ($${f(reduccion)}) es menor que el costo de mitigación ($${f(c)}). El beneficio neto es negativo: -$${f(Math.abs(beneficioNeto))}.`;
+    }
+    el.innerHTML+=`<p style="margin-top:.75rem;font-size:.82rem;color:var(--muted)">Recuerda: la pérdida esperada es un promedio probabilístico. Si la probabilidad estimada cambia, el análisis cambia. Siempre explicar de dónde vienen las probabilidades.</p>`;
+    setStep('rk',2,3);
+  }
+}
+
+// ═══ KPIs ═══
+function calcKPI(tipo){
+  const showR=(id,html,cls)=>{const el=document.getElementById('kpi-'+tipo+'-result');el.className=`result-panel show ${cls}`;el.innerHTML=html;};
+  const showE=(id,txt)=>{const el=document.getElementById('kpi-'+tipo+'-err');document.getElementById('kpi-'+tipo+'-err-txt').textContent=txt;el.classList.add('show');};
+  const hideE=()=>{const el=document.getElementById('kpi-'+tipo+'-err');if(el)el.classList.remove('show');};
+  hideE();
+
+  if(tipo==='red'){
+    const pb=parseFloat(document.getElementById('kpi-pb').value);
+    const pn=parseFloat(document.getElementById('kpi-pn').value);
+    if(isNaN(pb)||pb<=0){showE('','El precio base debe ser mayor a cero.');return;}
+    if(isNaN(pn)||pn<0){showE('','El precio nuevo no puede ser negativo.');return;}
+    if(pn>pb){showE('','El precio nuevo es mayor al base — eso es un incremento, no reducción.');return;}
+    const r=((pb-pn)/pb)*100;
+    showR('','<div class="result-num" style="color:var(--a3)">'+r.toFixed(2)+'%</div>'+
+      '<div class="result-steps" style="margin-top:1rem">'+
+      mkStep(1,'Diferencia = $'+pb+' − $'+pn+' = $'+(pb-pn).toFixed(2))+
+      mkStep(2,'Reducción % = $'+(pb-pn).toFixed(2)+' ÷ $'+pb+' × 100 = '+r.toFixed(2)+'%',true)+
+      '</div><p style="margin-top:.75rem;font-size:.82rem;color:var(--muted)">Solo válido si las condiciones (calidad, plazo, cantidad) son equivalentes entre ambas compras.</p>','rp-ok');
+  }
+  else if(tipo==='otif'){
+    const c=parseFloat(document.getElementById('kpi-otif-c').value);
+    const t=parseFloat(document.getElementById('kpi-otif-t').value);
+    if(isNaN(c)||c<0){showE('','Ingresa los pedidos cumplidos.');return;}
+    if(isNaN(t)||t<1){showE('','El total debe ser al menos 1.');return;}
+    if(c>t){showE('','Los pedidos cumplidos no pueden ser más que el total evaluado.');return;}
+    const r=(c/t)*100;
+    const cls=r>=95?'rp-ok':r>=80?'rp-warn':'rp-err';
+    showR('','<div class="result-num" style="color:'+(r>=95?'var(--a3)':r>=80?'var(--a2)':'var(--red)')+'">'+r.toFixed(1)+'%</div>'+
+      '<div class="result-steps" style="margin-top:1rem">'+
+      mkStep(1,'OTIF = '+c+' ÷ '+t+' × 100 = '+r.toFixed(1)+'%',true)+
+      mkStep(2,r>=95?'✅ Nivel excelente (≥95%). Proveedor confiable.':r>=80?'⚠️ Nivel aceptable pero mejorable. Se pierden pedidos en tiempo o cantidad.':'❌ Nivel bajo. Impacto real en operación y clientes.')+
+      '</div>',cls);
+  }
+  else if(tipo==='rechazo'){
+    const r=parseFloat(document.getElementById('kpi-rj-r').value);
+    const t=parseFloat(document.getElementById('kpi-rj-t').value);
+    if(isNaN(r)||r<0){showE('','Ingresa las unidades rechazadas.');return;}
+    if(isNaN(t)||t<1){showE('','El total inspeccionado debe ser al menos 1.');return;}
+    if(r>t){showE('','Los rechazos no pueden ser más que el total inspeccionado.');return;}
+    const pct=(r/t)*100;
+    const cls=pct<=1?'rp-ok':pct<=5?'rp-warn':'rp-err';
+    showR('','<div class="result-num" style="color:'+(pct<=1?'var(--a3)':pct<=5?'var(--a2)':'var(--red)')+'">'+pct.toFixed(2)+'%</div>'+
+      '<div class="result-steps" style="margin-top:1rem">'+
+      mkStep(1,'Rechazo = '+r+' ÷ '+t+' × 100 = '+pct.toFixed(2)+'%',true)+
+      mkStep(2,pct<=1?'✅ Tasa baja (≤1%). Control de calidad del proveedor sólido.':pct<=5?'⚠️ Tasa moderada. Revisar causa raíz con el proveedor.':'❌ Tasa alta. Evaluar alternativas o plan de mejora urgente.')+
+      '</div><p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">Si se inspeccionó una muestra, este resultado aplica a esa muestra — no puede extrapolarse automáticamente al lote completo sin justificación estadística.</p>',cls);
+  }
+  else if(tipo==='lt'){
+    const raw=document.getElementById('kpi-lt-vals').value;
+    const vals=raw.split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v)&&v>=0);
+    if(vals.length<2){showE('','Ingresa al menos 2 valores separados por coma.');return;}
+    const sum=vals.reduce((a,b)=>a+b,0);
+    const avg=sum/vals.length;
+    const variacion=Math.max(...vals)-Math.min(...vals);
+    showR('','<div class="result-num" style="color:var(--a1)">'+avg.toFixed(1)+' días</div>'+
+      '<div class="result-steps" style="margin-top:1rem">'+
+      mkStep(1,'Suma de días = '+vals.join(' + ')+' = '+sum)+
+      mkStep(2,'Número de pedidos = '+vals.length)+
+      mkStep(3,'Promedio = '+sum+' ÷ '+vals.length+' = '+avg.toFixed(1)+' días',true)+
+      mkStep(4,'Variación (máx − mín) = '+(Math.max(...vals))+' − '+(Math.min(...vals))+' = '+variacion+' días')+
+      '</div><p style="font-size:.8rem;color:var(--muted);margin-top:.75rem">El promedio puede ocultar variabilidad. Una variación de '+variacion+' días indica '+(variacion<=2?'alta predictibilidad.':variacion<=5?'variabilidad moderada — considera inventario de seguridad adicional.':'alta variabilidad. El proveedor es poco predecible y el inventario de seguridad debe ser mayor.')+'</p>','rp-ok');
+  }
+  else if(tipo==='surt'){
+    const a=parseFloat(document.getElementById('kpi-su-a').value);
+    const s=parseFloat(document.getElementById('kpi-su-s').value);
+    if(isNaN(a)||a<0){showE('','Ingresa las unidades atendidas.');return;}
+    if(isNaN(s)||s<1){showE('','Las unidades solicitadas deben ser al menos 1.');return;}
+    if(a>s){showE('','Las unidades atendidas no pueden ser más que las solicitadas.');return;}
+    const r=(a/s)*100;
+    const cls=r>=98?'rp-ok':r>=90?'rp-warn':'rp-err';
+    showR('','<div class="result-num" style="color:'+(r>=98?'var(--a3)':r>=90?'var(--a2)':'var(--red)')+'">'+r.toFixed(1)+'%</div>'+
+      '<div class="result-steps" style="margin-top:1rem">'+
+      mkStep(1,'Surtimiento = '+a+' ÷ '+s+' × 100 = '+r.toFixed(1)+'%',true)+
+      mkStep(2,r>=98?'✅ Nivel excelente. Casi toda la demanda es atendida inmediatamente.':r>=90?'⚠️ Hay '+(s-a).toFixed(0)+' unidades no atendidas. Revisar política de inventario.':'❌ '+((s-a)/s*100).toFixed(1)+'% de la demanda no fue atendida. Alto riesgo operativo.')+
+      '</div>',cls);
+  }
+}
+
+// ═══ MATRIZ ═══
+const mtzWeights=[.25,.25,.20,.15,.10,.05];
+function calcMtz(){
+  let tA=0,tB=0,tC=0;
+  for(let i=1;i<=6;i++){
+    const a=Math.min(10,Math.max(0,parseFloat(document.getElementById('mA'+i).value)||0));
+    const b=Math.min(10,Math.max(0,parseFloat(document.getElementById('mB'+i).value)||0));
+    const c=Math.min(10,Math.max(0,parseFloat(document.getElementById('mC'+i).value)||0));
+    const w=mtzWeights[i-1];
+    const wa=(a*w).toFixed(2),wb=(b*w).toFixed(2),wc=(c*w).toFixed(2);
+    document.getElementById('wA'+i).textContent=wa;
+    document.getElementById('wB'+i).textContent=wb;
+    document.getElementById('wC'+i).textContent=wc;
+    tA+=parseFloat(wa);tB+=parseFloat(wb);tC+=parseFloat(wc);
+  }
+  tA=parseFloat(tA.toFixed(2));tB=parseFloat(tB.toFixed(2));tC=parseFloat(tC.toFixed(2));
+  document.getElementById('totA').textContent=tA;
+  document.getElementById('totB').textContent=tB;
+  document.getElementById('totC').textContent=tC;
+  const max=Math.max(tA,tB,tC);
+  const winner=max===tA?'A':max===tB?'B':'C';
+  const el=document.getElementById('mtz-result');
+  el.innerHTML=`<strong>Proveedor ${winner} obtiene la mayor puntuación ponderada (${max}).</strong> Recuerda que esta matriz es una herramienta de apoyo — los pesos pueden cambiarse según la estrategia de la organización. Además, si algún proveedor incumple un requisito obligatorio, queda fuera independientemente de su puntuación.`;
+  el.classList.add('show');
+}
+calcMtz();
+
+// ═══ QUIZ ═══
+const questions=[
+  {
+    scenario:'🏭 Una panadería tiene 300 kg de harina disponibles. Consume 60 kg por día y el proveedor tarda 6 días en entregar.',
+    q:'¿Cuántos días de cobertura tiene? ¿Y qué problema representa?',
+    opts:[
+      'Cobertura = 300 ÷ 60 = 5 días. No hay problema porque casi llega al lead time.',
+      'Cobertura = 300 ÷ 60 = 5 días. Hay un problema: el proveedor tarda 6 días, por lo que al emitir la orden hoy faltará material durante 1 día (60 kg sin cubrir).',
+      'Cobertura = 60 ÷ 300 = 0.2 días. Se requiere pedir hoy mismo.',
+      'Cobertura = 300 × 60 = 18,000 días. El inventario es más que suficiente.'
+    ],
+    correct:1,
+    fb:[
+      '❌ El cálculo es correcto (300÷60=5 días), pero la conclusión no. Si el lead time es 6 días y la cobertura es 5, emitir la orden HOY significa que el material llegará en 6 días — pero el inventario se agotará en 5. Habrá 1 día (= 60 kg) sin material. "Casi llegar" al lead time es insuficiente.',
+      '✅ ¡Correcto! Cobertura = 300 ÷ 60 = 5 días. Como el lead time (6 días) supera la cobertura (5 días), ya existe un problema: ordenar hoy genera un faltante de 1 día = 60 kg. La acción correcta es buscar entrega urgente, fuente alterna, o reducir temporalmente la producción.',
+      '❌ La fórmula es al revés. Cobertura = Inventario ÷ Consumo diario = 300 ÷ 60 = 5 días. Nunca Consumo ÷ Inventario — eso daría una fracción de día sin sentido práctico.',
+      '❌ La multiplicación (300 × 60) no corresponde a ninguna fórmula de cobertura. Cobertura = Inventario disponible ÷ Consumo diario = 300 ÷ 60 = 5 días.'
+    ]
+  },
+  {
+    scenario:'💰 Dos proveedores de componentes (500 unidades): Proveedor X: precio $90, transporte $12, inspección $6, defectos $10, almacenamiento $5 = total unitario $123. Proveedor Y: precio $100, transporte $3, inspección $0, defectos $1, almacenamiento $2 = total unitario $106.',
+    q:'¿Cuál es la diferencia de costo total en el lote completo y cuál conviene?',
+    opts:[
+      'X conviene porque tiene el precio más bajo ($90 vs $100). Diferencia: $5,000 a favor de X.',
+      'Son iguales porque la suma de sus costos extra cancela la diferencia de precio.',
+      'Y conviene. Costo total X = $61,500 y Y = $53,000. Diferencia de $8,500 a favor de Y, aunque Y tiene mayor precio unitario.',
+      'X conviene. Costo total X = $45,000 y Y = $50,000. X es $5,000 más barato en el lote.'
+    ],
+    correct:2,
+    fb:[
+      '❌ Este es exactamente el error que la materia busca corregir. El precio más bajo no es el costo más bajo. Costo unitario X = 90+12+6+10+5 = $123. Costo unitario Y = 100+3+0+1+2 = $106. En 500 unidades: X = $61,500, Y = $53,000. Y ahorra $8,500 aunque tiene un precio $10 mayor.',
+      '❌ Los costos adicionales de X ($12+$6+$10+$5=$33) son considerablemente mayores que los de Y ($3+$0+$1+$2=$6). La diferencia de precio ($10) no los cancela — amplía la brecha. Costo total unitario: X=$123, Y=$106.',
+      '✅ ¡Correcto! Costo unitario X = $90+$12+$6+$10+$5 = $123. Costo unitario Y = $100+$3+$0+$1+$2 = $106. En 500 unidades: X = $123×500 = $61,500; Y = $106×500 = $53,000. Diferencia: $8,500 a favor de Y. Aunque X tiene precio $10 menor, sus costos adicionales generan un costo total $17 mayor por unidad.',
+      '❌ Los cálculos no corresponden a los datos del problema. Si se aplica la fórmula: X = (90+12+6+10+5)×500 = $123×500 = $61,500. Y = (100+3+0+1+2)×500 = $106×500 = $53,000. X es más caro en $8,500, no más barato.'
+    ]
+  },
+  {
+    scenario:'📊 Una empresa tiene ventas de $5,000,000 y costos de $4,500,000 (utilidad base = $500,000). Compras logra un ahorro de $80,000 en materiales, pero eso generó $30,000 en retrabajos por calidad deficiente.',
+    q:'¿Cuál es el impacto real en la utilidad y el porcentaje de cambio?',
+    opts:[
+      'La utilidad aumenta $80,000 (16%) porque ese es el ahorro logrado por compras.',
+      'El ahorro neto es $80,000 − $30,000 = $50,000. Nueva utilidad: $550,000. Aumento del 10%.',
+      'La utilidad baja porque los retrabajos siempre cuestan más que el ahorro.',
+      'El ahorro neto es $50,000 pero no cambia la utilidad hasta el siguiente período contable.'
+    ],
+    correct:1,
+    fb:[
+      '❌ El ahorro nominal fue $80,000, pero generó $30,000 en costos adicionales (retrabajos). El ahorro NETO es $80,000 − $30,000 = $50,000. La nueva utilidad es $500,000 + $50,000 = $550,000. El % de cambio = ($50,000 ÷ $500,000) × 100 = 10%, no 16%.',
+      '✅ ¡Correcto! Ahorro neto = $80,000 − $30,000 = $50,000. Nuevos costos = $4,500,000 − $50,000 = $4,450,000. Nueva utilidad = $5,000,000 − $4,450,000 = $550,000. Cambio = ($550,000 − $500,000) ÷ $500,000 × 100 = 10%. Importante: si los retrabajos hubieran sido $90,000, el "ahorro" habría causado pérdida neta de $10,000.',
+      '❌ No siempre — depende de los montos. En este caso el ahorro neto es positivo ($50,000), por lo que la utilidad sí sube. Si los retrabajos hubieran superado el ahorro ($30,000 > $80,000), entonces sí bajaría. Hay que calcular el efecto neto.',
+      '❌ Para este ejercicio se asume que el ahorro afecta los costos del período actual. El impacto contable exacto depende del sistema de costeo, pero el planteamiento del ejercicio indica que el ahorro ya se reconoce en el período. La utilidad sube $50,000 en el período analizado.'
+    ]
+  },
+  {
+    scenario:'🔄 Un almacén consume 200 piezas diarias. El proveedor tarda 5 días. Se mantienen 400 piezas de inventario de seguridad.',
+    q:'¿Cuál es el punto de reorden correcto?',
+    opts:[
+      'PR = 200 × 5 = 1,000 piezas (sin inventario de seguridad porque ya está en el almacén).',
+      'PR = (200 × 5) + 400 = 1,400 piezas.',
+      'PR = 200 + 5 + 400 = 605 piezas.',
+      'PR = 400 ÷ 200 = 2 días — se activa cuando solo quedan 2 días de inventario de seguridad.'
+    ],
+    correct:1,
+    fb:[
+      '❌ El inventario de seguridad (SS) siempre se incluye en la fórmula del PR. Su propósito es precisamente actuar como colchón ante variaciones. Si no se incluye, el PR solo cubre el consumo durante el lead time sin ningún margen de protección. Fórmula: PR = d×L + SS = (200×5) + 400 = 1,400.',
+      '✅ ¡Correcto! PR = d × L + SS = (200 piezas/día × 5 días) + 400 piezas = 1,000 + 400 = 1,400 piezas. Cuando el inventario llegue a 1,400 piezas, se debe emitir la orden. Las 400 de SS protegen ante variaciones de demanda o retrasos del proveedor durante el lead time.',
+      '❌ La fórmula correcta multiplica el consumo diario por el lead time — no los suma. PR = d×L + SS. Si se suman los tres valores directamente, el resultado no tiene sentido dimensional: no puede combinarse "piezas/día × días" con "+ días".',
+      '❌ Esta fórmula no corresponde al punto de reorden. El cociente 400÷200 = 2 días indica cuánto tiempo dura el inventario de seguridad — es útil para análisis, pero no es el PR. El PR debe considerar todo el consumo durante el lead time más el SS.'
+    ]
+  },
+  {
+    scenario:'⚡ La probabilidad de que un proveedor incumpla es 20%. El impacto estimado si ocurre es $150,000. Una alternativa más confiable reduce la probabilidad a 3% con un costo extra de $10,000.',
+    q:'¿Se justifica económicamente la alternativa más confiable?',
+    opts:[
+      'No, porque $10,000 adicionales es mucho dinero sin certeza de que el problema ocurra.',
+      'Sí. Pérdida esperada base = $30,000. Con mitigación = $4,500. Reducción = $25,500. Como $25,500 > $10,000, el beneficio neto es $15,500 — la alternativa se justifica bajo estos supuestos.',
+      'Sí, porque siempre conviene el proveedor más confiable independientemente del costo.',
+      'No hay suficiente información para decidir — se necesita saber el precio exacto de cada proveedor.'
+    ],
+    correct:1,
+    fb:[
+      '❌ Este razonamiento ignora que el riesgo tiene un costo probabilístico real. Pérdida esperada base = 0.20 × $150,000 = $30,000. Con mitigación: 0.03 × $150,000 = $4,500. La reducción es $25,500. Pagar $10,000 para reducir el riesgo en $25,500 genera un beneficio neto de $15,500. La "incertidumbre" ya está modelada en la probabilidad.',
+      '✅ ¡Correcto! Pérdida esperada base = 0.20 × $150,000 = $30,000. Con mitigación = 0.03 × $150,000 = $4,500. Reducción = $30,000 − $4,500 = $25,500. Costo de mitigación: $10,000. Beneficio neto = $25,500 − $10,000 = $15,500. Bajo estos supuestos, pagar $10,000 extra es una decisión favorable. (Siempre explicar de dónde vienen las probabilidades estimadas.)',
+      '❌ "Siempre conviene el más confiable" ignora el análisis de costo-beneficio. Si la alternativa confiable costara $100,000 extra, el beneficio neto sería negativo (-$74,500). La decisión depende del cálculo, no de una regla absoluta.',
+      '❌ Para esta comparación específica (¿se justifica el costo extra de $10,000?) la información es suficiente: probabilidades, impacto y costo de mitigación. El precio detallado de cada proveedor es relevante para otros análisis pero no es necesario aquí.'
+    ]
+  },
+  {
+    scenario:'📊 En un mes, un comprador evalúa 60 pedidos. 54 llegaron a tiempo. De esos 54, 51 llegaron completos. 6 llegaron tarde pero completos.',
+    q:'¿Cuál es el OTIF correcto y cuáles pedidos NO cuentan para el OTIF?',
+    opts:[
+      'OTIF = 54÷60 = 90%, porque se mide solo el cumplimiento de tiempo.',
+      'OTIF = 51÷60 = 85%, porque los 6 tardíos completos y los 3 a tiempo incompletos no cumplen AMBAS condiciones simultáneamente.',
+      'OTIF = 57÷60 = 95%, sumando los 51 (a tiempo y completos) + 6 (tarde pero completos).',
+      'OTIF = (54+51)÷60÷2 = 87.5%, promediando los dos indicadores.'
+    ],
+    correct:1,
+    fb:[
+      '❌ OTIF significa On Time IN FULL — a tiempo Y completo. Medir solo el tiempo ignora si llegaron completos. De los 54 que llegaron a tiempo, 3 llegaron incompletos → no cumplen OTIF. OTIF = pedidos que cumplen AMBAS condiciones = 51.',
+      '✅ ¡Correcto! OTIF = pedidos entregados a tiempo Y completos. Los 54 llegaron a tiempo, pero de esos, 3 llegaron incompletos → no cumplen. Los 6 tardíos, aunque completos → tampoco cumplen. Solo 51 pedidos cumplen ambas condiciones. OTIF = 51÷60 × 100 = 85%.',
+      '❌ Los 6 pedidos tardíos NO cuentan para el OTIF aunque hayan llegado completos. El OTIF requiere cumplir AMBAS condiciones: tiempo Y cantidad. Si falla una, el pedido no se cuenta. Sumar los 6 tardíos sobreestima el indicador.',
+      '❌ El OTIF no es el promedio de dos indicadores separados. Es una medición binaria por pedido: ¿llegó a tiempo Y completo? Si sí → suma. Si no → no suma. El promedio de dos métricas distintas produce un indicador que no refleja la realidad operativa.'
+    ]
+  }
+];
+
+let curQ=0,score=0,sel=-1,answered=false;
+function renderQ(){
+  const q=questions[curQ];
+  document.getElementById('q-container').innerHTML=`
+    <div class="q-scenario">${q.scenario}</div>
+    <div class="q-label">Pregunta ${curQ+1} de ${questions.length}</div>
+    <div class="q-options">
+      ${q.opts.map((o,i)=>`
+        <div class="q-opt" id="qo${i}" onclick="selOpt(${i})">
+          <div class="q-letter">${['A','B','C','D'][i]}</div>
+          <span>${o}</span>
+        </div>`).join('')}
+    </div>
+    <div class="q-feedback" id="q-fb"></div>
+    <div class="q-btns">
+      <button class="q-check" id="q-check" onclick="checkQ()" disabled>Verificar respuesta</button>
+      <button class="q-next" id="q-next" onclick="nextQ()">${curQ<questions.length-1?'Siguiente →':'Ver resultado'}</button>
+    </div>`;
+  sel=-1;answered=false;updateProg();
+}
+function selOpt(i){
+  if(answered)return;sel=i;
+  document.querySelectorAll('.q-opt').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('qo'+i).classList.add('selected');
+  document.getElementById('q-check').disabled=false;
+}
+function checkQ(){
+  if(answered||sel<0)return;answered=true;
+  const q=questions[curQ];
+  const fb=document.getElementById('q-fb');
+  fb.innerHTML=q.fb[sel];fb.classList.add('show');
+  document.querySelectorAll('.q-opt').forEach((o,i)=>{
+    if(i===q.correct)o.classList.add('correct');
+    else if(i===sel&&i!==q.correct)o.classList.add('incorrect');
+  });
+  if(sel===q.correct){score++;fb.classList.add('fb-ok');}else fb.classList.add('fb-err');
+  document.getElementById('q-check').disabled=true;
+  document.getElementById('q-next').classList.add('show');
+}
+function nextQ(){
+  document.getElementById('qd'+curQ).classList.remove('active');
+  document.getElementById('qd'+curQ).classList.add('done');
+  curQ++;sel=-1;
+  if(curQ>=questions.length){
+    document.getElementById('q-container').style.display='none';
+    document.getElementById('q-prog').style.display='none';
+    const sc=document.getElementById('score-card');sc.classList.add('show');
+    document.getElementById('score-big').textContent=score+'/'+questions.length;
+    const msgs=[
+      ['Repasa las fórmulas 📖','Vuelve a las calculadoras y practica cada una paso a paso.'],
+      ['Vas avanzando 🔢','Revisa cobertura, OTIF y costo total. Ahí están los errores.'],
+      ['Buen trabajo 📊','Comprendes los fundamentos. Repasa las preguntas falladas.'],
+      ['Muy bien 💼','Dominas los cálculos. Casi perfecto.'],
+      ['Excelente 🏆','Dominio completo de la sesión 1.'],
+      ['Perfecto 🥇','100%. Estás listo para la siguiente sesión.']
+    ];
+    document.getElementById('score-msg').textContent=msgs[score][0];
+    document.getElementById('score-sub').textContent=msgs[score][1];
+  } else {
+    renderQ();
+    document.getElementById('qd'+curQ).classList.add('active');
+  }
+}
+function updateProg(){
+  for(let i=0;i<questions.length;i++){
+    const d=document.getElementById('qd'+i);
+    d.classList.remove('active','done');
+    if(i<curQ)d.classList.add('done');
+    else if(i===curQ)d.classList.add('active');
+  }
+}
+function restartQuiz(){
+  curQ=0;score=0;sel=-1;answered=false;
+  document.getElementById('score-card').classList.remove('show');
+  document.getElementById('q-container').style.display='block';
+  document.getElementById('q-prog').style.display='flex';
+  renderQ();
+}
+renderQ();
+
+// init calculators
+calcTCO_init();
+function calcTCO_init(){
+  const el=document.getElementById('ct-result');if(el)el.style.display='none';}
+</script>
+</body>
+</html>
