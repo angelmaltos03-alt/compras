@@ -1,0 +1,1026 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Taller de Compras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Concepto: mesa de trabajo de un departamento de compras. Pestañas por módulo, ejercicios como "formatos" con sello de respuesta (Autorizado / Rechazado). */
+:root{
+  --bg:#E9EEF2; --surface:#FFFFFF; --surface-2:#F4F6F8; --ink:#14202C; --muted:#566473;
+  --line:#CFD7DF; --line-strong:#9AA8B6; --accent:#0B5F80; --accent-ink:#FFFFFF; --accent-soft:#D6EAF2;
+  --ok:#17734A; --ok-bg:#DDF1E6; --warn:#8A5A00; --warn-bg:#FAEFD2; --bad:#B0261C; --bad-bg:#FBE1DE;
+  --font-display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E151D; --surface:#16202B; --surface-2:#1C2835; --ink:#E4EAF0; --muted:#9FADBB;
+    --line:#2B3846; --line-strong:#4A5C6E; --accent:#5BB8D9; --accent-ink:#07161E; --accent-soft:#15303D;
+    --ok:#62CC98; --ok-bg:#12301F; --warn:#E5B44E; --warn-bg:#35280C; --bad:#F28E86; --bad-bg:#3B1714;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E151D; --surface:#16202B; --surface-2:#1C2835; --ink:#E4EAF0; --muted:#9FADBB;
+  --line:#2B3846; --line-strong:#4A5C6E; --accent:#5BB8D9; --accent-ink:#07161E; --accent-soft:#15303D;
+  --ok:#62CC98; --ok-bg:#12301F; --warn:#E5B44E; --warn-bg:#35280C; --bad:#F28E86; --bad-bg:#3B1714;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-body);padding-inline:16px;padding-block:0 48px}
+.wrap{max-width:920px;margin-inline:auto}
+h1,h2,h3,h4,p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font:inherit;color:inherit}
+
+.top{padding-block:28px 14px;display:grid;gap:8px}
+.kicker{font:500 12px/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(40px,8vw,64px)/.95 var(--font-display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.overall{display:flex;align-items:center;gap:12px;font:500 12px var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.bar{flex:1;height:8px;background:var(--line);border-radius:2px;overflow:hidden;min-width:60px}
+.bar>i{display:block;height:100%;background:var(--accent)}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-block:10px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+.tab{white-space:nowrap;padding:8px 12px;border:1px solid var(--line);background:var(--surface);border-radius:4px;cursor:pointer;font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center}
+.tab[aria-current="page"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tab .n{font:500 12px var(--font-mono);opacity:.8}
+.tab .tick{font:500 11px var(--font-mono);opacity:.85}
+
+.view{display:grid;gap:20px;padding-block:24px}
+.tag{font:500 12px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.vhead{display:grid;gap:6px}
+h2{font:700 clamp(30px,5vw,40px)/1 var(--font-display);text-transform:uppercase;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch}
+h3{font:700 22px/1.1 var(--font-display);text-transform:uppercase;letter-spacing:.02em}
+
+.lesson{background:var(--accent-soft);border-radius:6px;padding:16px 18px;display:grid;gap:8px}
+.lesson-body{display:grid;gap:8px;max-width:70ch}
+.lesson-body ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.lesson-body b{font-weight:600}
+.defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:4px}
+.def{background:var(--surface);border-radius:4px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.def b{font:700 17px var(--font-display);text-transform:uppercase;letter-spacing:.03em}
+.def span{font-size:14px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface);border-radius:4px;padding:6px 10px;font:500 14px var(--font-mono)}
+
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;display:grid;gap:14px;min-width:0}
+.ex-head{display:grid;gap:4px}
+.ex-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.folio{font:500 12px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line-strong);padding:2px 6px;border-radius:3px}
+.badge{font:500 12px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ok)}
+.ex-desc{color:var(--muted);font-size:15px}
+.count{font:500 12px var(--font-mono);color:var(--muted);letter-spacing:.06em}
+.qset{display:grid;gap:18px}
+.q{display:grid;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q-prompt{font-weight:500}
+.opts{display:grid;gap:8px}
+.opts.row{display:flex;flex-wrap:wrap}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;border:1px solid var(--line);background:var(--surface-2);border-radius:4px;cursor:pointer;line-height:1.4}
+.opts.row .opt{width:auto;flex:1 1 130px;text-align:center}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ink)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--ink);opacity:.8}
+.opt:disabled{cursor:default}
+
+.fbslot:empty{display:none}
+.fb{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:4px;border:1px solid currentColor}
+.fb.ok{background:var(--ok-bg);color:var(--ok)}
+.fb.bad{background:var(--bad-bg);color:var(--bad)}
+.fb.part{background:var(--warn-bg);color:var(--warn)}
+.fb.info{background:var(--surface-2);color:var(--muted)}
+.fb-body{color:var(--ink);display:grid;gap:4px;min-width:0;font-size:15px}
+.fb-body strong{font-weight:600}
+.fb-body p{margin:0}
+.fb-body ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.stamp{flex:none;font:700 14px/1.2 var(--font-display);letter-spacing:.12em;text-transform:uppercase;border:2px solid currentColor;padding:2px 8px;border-radius:3px;transform:rotate(-3deg);background:transparent}
+@media (prefers-reduced-motion:no-preference){.fb{animation:sellar .22s ease-out}}
+@keyframes sellar{from{transform:scale(1.03);opacity:.4}to{transform:none;opacity:1}}
+
+.btn{padding:9px 16px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font:500 12px var(--font-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.numex{display:grid;gap:14px}
+.prob{max-width:68ch}
+.fields{display:flex;flex-wrap:wrap;gap:12px}
+.field{display:grid;gap:4px;flex:1 1 200px;min-width:0}
+.field .lab{font:500 12px var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.field .ctl{display:flex;align-items:center;gap:6px}
+.field i{font-style:normal;color:var(--muted)}
+input[type=text],select{font:inherit;font-variant-numeric:tabular-nums;padding:9px 10px;border:1px solid var(--line-strong);border-radius:4px;background:var(--surface);color:var(--ink);min-width:0;width:100%}
+input.ok,select.ok{border-color:var(--ok);background:var(--ok-bg)}
+input.bad,select.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+.checks{display:grid;gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface-2);cursor:pointer}
+.check input{margin-top:4px;flex:none}
+
+.rows{display:grid;gap:0}
+.arow{display:grid;gap:8px;padding-block:12px;border-top:1px solid var(--line)}
+.arow:first-child{border-top:0}
+.arow-main{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.arow-main b{flex:1 1 220px;font-weight:500}
+.arow-main select{flex:0 1 240px}
+
+.sod{display:grid;gap:12px}
+.sodrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 12px;background:var(--surface-2);border-radius:4px}
+.sodrow .st{flex:1 1 220px;font-weight:500;display:flex;gap:10px;align-items:center}
+.sodrow .st em{font:500 12px var(--font-mono);font-style:normal;color:var(--muted)}
+.sodrow select{flex:0 1 220px}
+.meter{display:flex;align-items:center;gap:10px;font:500 12px var(--font-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.meter .bar>i{background:var(--bad)}
+
+.builder{display:grid;grid-template-columns:minmax(0,270px) minmax(0,1fr);gap:22px;align-items:start}
+.pool{display:grid;gap:8px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 66px)}
+.pool h4,.org h4{font:500 12px var(--font-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.card{display:block;width:100%;text-align:left;padding:8px 10px;border:1px solid var(--line-strong);background:var(--surface-2);border-radius:4px;cursor:grab;font-size:14px;line-height:1.3}
+.card:hover{border-color:var(--accent)}
+.card.sel{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.org{display:grid;gap:10px;justify-items:center;min-width:0}
+.node{border:2px solid var(--ink);padding:8px 14px;border-radius:4px;font:700 17px var(--font-display);letter-spacing:.04em;text-transform:uppercase;text-align:center}
+.vline{width:2px;height:14px;background:var(--line-strong)}
+.branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}
+.branch{display:grid;gap:8px;align-content:start;border-top:2px solid var(--line-strong);padding-top:10px;min-width:0}
+.staff{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;border-top:2px dashed var(--line);padding-top:10px}
+.slot{width:100%;min-height:56px;border:2px dashed var(--line-strong);border-radius:4px;background:transparent;color:var(--muted);font-size:13px;line-height:1.3;padding:8px;cursor:pointer;text-align:center}
+.slot.filled{border-style:solid;border-color:var(--ok);background:var(--ok-bg);color:var(--ink);font-weight:600}
+.slot.armed{border-color:var(--accent);color:var(--accent)}
+.slot.over{background:var(--accent-soft)}
+.out{width:100%;border:2px dashed var(--bad);color:var(--bad);background:transparent;border-radius:4px;padding:10px;font-size:13px;cursor:pointer;text-align:center}
+.out.over{background:var(--bad-bg)}
+.ficha{display:grid;gap:8px;background:var(--surface-2);border-radius:4px;padding:14px 16px}
+.ficha dl{margin:0;display:grid;gap:8px}
+.ficha dt{font:500 12px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ficha dd{margin:0}
+.ficha ul{margin:0;padding-left:18px}
+pre{margin:0;background:var(--surface-2);border-radius:4px;padding:12px;overflow-x:auto;font:500 13px/1.5 var(--font-mono)}
+
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.mod{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.mod .num{font:700 34px/1 var(--font-display);color:var(--accent)}
+.mod p{color:var(--muted);font-size:15px}
+.goals{margin:0;padding-left:20px;display:grid;gap:4px}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:820px){
+  .builder{grid-template-columns:minmax(0,1fr)}
+  .pool{position:static}
+  .branches{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:480px){
+  .ex{padding:16px}
+}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <span class="kicker">Administración de compras y abastecimientos · Unidad 2 · Clase 4</span>
+    <h1>Taller de Compras</h1>
+    <div class="overall"><span id="ovtxt">0 / 0</span><div class="bar"><i id="ovbar" style="width:0%"></i></div></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Módulos"></nav>
+  <main id="app"></main>
+</div>
+
+<script>
+(function(){
+'use strict';
+var KEY='taller-compras-u2c4';
+var prog={};
+try{prog=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){prog={};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(prog));}catch(e){}}
+var fmt=function(n){return Number(n).toLocaleString('es-MX',{maximumFractionDigits:2});};
+var money=function(n){return '$'+fmt(n);};
+var rnd=function(a){return a[Math.floor(Math.random()*a.length)];};
+var rint=function(a,b){return a+Math.floor(Math.random()*(b-a+1));};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function parseNum(s){var t=String(s).replace(/[$\s,%]/g,'');return t===''?NaN:Number(t);}
+
+function h(tag,props){
+  var el=document.createElement(tag);
+  props=props||{};
+  Object.keys(props).forEach(function(k){
+    var v=props[k];
+    if(k==='class')el.className=v;
+    else if(k==='html')el.innerHTML=v;
+    else if(k.indexOf('on')===0)el.addEventListener(k.slice(2),v);
+    else if(v===true)el.setAttribute(k,'');
+    else if(v!==false&&v!=null)el.setAttribute(k,v);
+  });
+  var kids=Array.prototype.slice.call(arguments,2);
+  kids.forEach(function add(kid){
+    if(kid==null||kid===false)return;
+    if(Array.isArray(kid)){kid.forEach(add);return;}
+    el.append(kid.nodeType?kid:document.createTextNode(kid));
+  });
+  return el;
+}
+
+/* ---------- retroalimentación ---------- */
+var STAMPS={ok:'Autorizado',bad:'Rechazado',part:'Con observaciones',info:'Pendiente'};
+function fb(kind,title,body){
+  return h('div',{class:'fb '+kind},
+    h('span',{class:'stamp'},STAMPS[kind]),
+    h('div',{class:'fb-body'},
+      title?h('strong',{},title):null,
+      body?h('div',{html:body}):null));
+}
+
+/* ---------- avance ---------- */
+var MODULES=[
+  {id:'m1',n:1,name:'Organizar',sub:'Autoridad, responsabilidad y control',ex:['m1a','m1b','m1c']},
+  {id:'m2',n:2,name:'Puestos',sub:'¿Quién hace qué?',ex:['m2']},
+  {id:'m3',n:3,name:'Estructura',sub:'Dimensiona el equipo',ex:['m3a','m3b','m3c','m3d']},
+  {id:'m4',n:4,name:'Las 5 correctas',sub:'Calidad, costo y números',ex:['m4a','m4b','m4c','m4d','m4e','m4f','m4g']},
+  {id:'m5',n:5,name:'Organigrama',sub:'Arma Motores del Norte',ex:['m5']},
+  {id:'m6',n:6,name:'Caso final',sub:'Inventario en riesgo',ex:['m6']}
+];
+var TOTAL=MODULES.reduce(function(a,m){return a+m.ex.length;},0);
+function doneIn(m){return m.ex.filter(function(e){return prog[e];}).length;}
+function doneAll(){return MODULES.reduce(function(a,m){return a+doneIn(m);},0);}
+function markDone(id){
+  if(!id||prog[id])return;
+  prog[id]=1;save();
+  drawTabs();
+  var b=document.querySelector('[data-ex="'+id+'"] .badge');
+  if(b)b.hidden=false;
+}
+
+/* ---------- bloques reutilizables ---------- */
+function lesson(title,html){return h('aside',{class:'lesson'},h('span',{class:'tag'},title),h('div',{class:'lesson-body',html:html}));}
+function vhead(n,name,sub){return h('header',{class:'vhead'},h('span',{class:'tag'},'Módulo '+n),h('h2',{},name),h('p',{class:'lead'},sub));}
+function exWrap(id,title,desc,content){
+  var folio='Ej. '+id.slice(1).toUpperCase();
+  return h('section',{class:'ex','data-ex':id},
+    h('div',{class:'ex-head'},
+      h('div',{class:'ex-top'},h('span',{class:'folio'},folio),h('h3',{},title),h('span',{class:'badge',hidden:!prog[id]},'✓ Completado')),
+      desc?h('p',{class:'ex-desc'},desc):null),
+    content);
+}
+function makeSet(id,total,host){
+  var n=0;
+  return {hit:function(){
+    n++;
+    if(n===total){
+      markDone(id);
+      if(host)host.append(fb('ok','Ejercicio completo','Ya lo tienes. Si quieres, repásalo desde la pestaña del módulo.'));
+    }
+  }};
+}
+
+function choiceQ(cfg){
+  var root=h('div',{class:'q'});
+  var slot=h('div',{class:'fbslot','aria-live':'polite'});
+  var solved=false;
+  var btns=cfg.options.map(function(o,i){return h('button',{type:'button',class:'opt',onclick:function(){pick(i);}},o.t);});
+  function pick(i){
+    if(solved)return;
+    var o=cfg.options[i];
+    if(o.ok){
+      solved=true;
+      btns.forEach(function(b,j){b.disabled=true;if(j===i)b.classList.add('ok');});
+      slot.replaceChildren(fb('ok','Correcto',o.why||cfg.explain||''));
+      if(cfg.onSolved)cfg.onSolved();
+    }else{
+      btns[i].classList.add('bad');btns[i].disabled=true;
+      slot.replaceChildren(fb('bad','Todavía no',o.why||'No es esa. Vuelve a leer y prueba otra opción.'));
+    }
+  }
+  root.append(h('p',{class:'q-prompt',html:cfg.prompt}),h('div',{class:'opts '+(cfg.layout||'')},btns),slot);
+  return root;
+}
+function qset(id,qs,layout){
+  var wrap=h('div',{class:'qset'});
+  var counter=h('span',{class:'count'},'0 / '+qs.length);
+  var n=0;
+  var set=makeSet(id,qs.length,wrap);
+  qs.forEach(function(q){
+    q.layout=q.layout||layout;
+    var orig=q.onSolved;
+    q.onSolved=function(){n++;counter.textContent=n+' / '+qs.length;if(orig)orig();set.hit();};
+    wrap.append(choiceQ(q));
+  });
+  wrap.prepend(counter);
+  return wrap;
+}
+function multiQ(cfg){
+  var root=h('div',{class:'q'});
+  var slot=h('div',{class:'fbslot','aria-live':'polite'});
+  var solved=false;
+  var boxes=cfg.options.map(function(o){return h('input',{type:'checkbox'});});
+  var list=h('div',{class:'checks'},cfg.options.map(function(o,i){return h('label',{class:'check'},boxes[i],h('span',{},o.t));}));
+  var btn=h('button',{type:'button',class:'btn',onclick:function(){
+    if(solved)return;
+    var missing=[],extra=[];
+    cfg.options.forEach(function(o,i){
+      if(o.ok&&!boxes[i].checked)missing.push(o);
+      if(!o.ok&&boxes[i].checked)extra.push(o);
+    });
+    if(!missing.length&&!extra.length){
+      solved=true;btn.disabled=true;
+      slot.replaceChildren(fb('ok','Correcto',cfg.explain||''));
+      if(cfg.onSolved)cfg.onSolved();
+      return;
+    }
+    var html='<ul>'+missing.map(function(o){return '<li><b>Falta marcar:</b> '+o.t+'. '+o.why+'</li>';}).concat(extra.map(function(o){return '<li><b>Sobra:</b> '+o.t+'. '+o.why+'</li>';})).join('')+'</ul>';
+    slot.replaceChildren(fb(extra.length?'bad':'part',extra.length?'Revisa tu selección':'Te falta algo',html));
+  }},'Verificar');
+  root.append(h('p',{class:'q-prompt',html:cfg.prompt}),list,h('div',{class:'actions'},btn),slot);
+  return root;
+}
+
+/* ---------- ejercicio numérico ---------- */
+var uidN=0;
+function numEx(o){
+  var p=o.gen(),solved=false,uid=o.id||('x'+(++uidN));
+  var box=h('div',{class:'numex'});
+  var slot=h('div',{class:'fbslot','aria-live':'polite'});
+  function build(){
+    solved=false;slot.replaceChildren();box.replaceChildren();
+    box.append(h('div',{class:'prob',html:p.intro}));
+    if(p.table)box.append(h('div',{class:'tablewrap',html:p.table}));
+    var grid=h('div',{class:'fields'});
+    p.fields.forEach(function(f){
+      var id=uid+'-'+f.key,ctl;
+      if(f.type==='sel'){
+        ctl=h('select',{id:id},h('option',{value:''},'Elige…'),f.options.map(function(x){return h('option',{value:x},x);}));
+      }else{
+        ctl=h('input',{id:id,type:'text',inputmode:'decimal',autocomplete:'off',placeholder:'0',onkeydown:function(e){if(e.key==='Enter')check();}});
+      }
+      f.el=ctl;
+      grid.append(h('label',{class:'field',for:id},h('span',{class:'lab'},f.label),h('span',{class:'ctl'},f.prefix?h('i',{},f.prefix):null,ctl,f.suffix?h('i',{},f.suffix):null)));
+    });
+    var acts=h('div',{class:'actions'},
+      h('button',{type:'button',class:'btn',onclick:check},'Comprobar'),
+      h('button',{type:'button',class:'btn ghost',onclick:function(){slot.replaceChildren(fb('info','Solución paso a paso',p.solution));}},'Ver solución'),
+      o.fixed?null:h('button',{type:'button',class:'btn ghost',onclick:function(){p=o.gen();build();}},'Otro ejercicio'));
+    box.append(grid,acts,slot);
+  }
+  function check(){
+    var vals=p.fields.map(function(f){return f.type==='sel'?f.el.value:parseNum(f.el.value);});
+    var empty=p.fields.some(function(f,i){return f.type==='sel'?!vals[i]:isNaN(vals[i]);});
+    if(empty){slot.replaceChildren(fb('info','Faltan respuestas','Completa todos los campos antes de comprobar. Usa punto para los decimales.'));return;}
+    var res=p.fields.map(function(f,i){
+      return f.type==='sel'?vals[i]===f.answer:Math.abs(vals[i]-f.answer)<=(f.tol==null?0.011:f.tol);
+    });
+    p.fields.forEach(function(f,i){f.el.classList.toggle('ok',res[i]);f.el.classList.toggle('bad',!res[i]);});
+    if(res.every(Boolean)){
+      slot.replaceChildren(fb('ok','Correcto',p.solution));
+      if(!solved){solved=true;if(o.id)markDone(o.id);if(o.onSolved)o.onSolved();}
+    }else{
+      var wrong=p.fields.filter(function(f,i){return !res[i];}).map(function(f){return f.label.toLowerCase();});
+      var msg='Revisa: '+wrong.join(', ')+'.';
+      var d=p.diagnose?p.diagnose(vals,res):null;
+      msg+='<br>'+(d||o.formula);
+      slot.replaceChildren(fb('bad','Todavía no',msg));
+    }
+  }
+  build();
+  return box;
+}
+
+/* ---------- generadores de problemas ---------- */
+function genPR(){
+  var d=rnd([60,80,100,120,150,200]),LT=rint(2,7),SS=rnd([50,75,100,150,200]);
+  var dl=d*LT,pr=dl+SS;
+  return {
+    intro:'Una planta consume <b>'+fmt(d)+' piezas por día</b>. El proveedor tarda <b>'+LT+' días</b> en entregar (lead time) y se mantiene un stock de seguridad de <b>'+fmt(SS)+' piezas</b>. ¿En qué nivel de inventario debe iniciar la reposición?',
+    fields:[{key:'pr',label:'Punto de reorden',answer:pr,suffix:'piezas'}],
+    diagnose:function(v){
+      if(v[0]===dl)return 'Ese número es la demanda durante el lead time ('+fmt(d)+' × '+LT+' = '+fmt(dl)+'). Falta sumar el stock de seguridad.';
+      if(v[0]===d*LT*SS||v[0]===d+LT+SS)return 'Se multiplica el consumo diario por el lead time y después se suma el stock de seguridad.';
+      return null;
+    },
+    solution:'<p>PR = d × LT + SS</p><p>'+fmt(d)+' × '+LT+' = '+fmt(dl)+'. Luego '+fmt(dl)+' + '+fmt(SS)+' = <b>'+fmt(pr)+' piezas</b>.</p><p>Al llegar a ese nivel conviene lanzar la orden.</p>'
+  };
+}
+function genAhorro(){
+  var ant=rnd([100,120,160,200,240]),pct=rnd([5,10,15,20,25]),qty=rnd([2000,5000,10000]);
+  var u=ant*pct/100,nuevo=ant-u,tot=u*qty;
+  return {
+    intro:'Antes se compraba una pieza a <b>'+money(ant)+'</b>. Tras negociar, el nuevo precio es <b>'+money(nuevo)+'</b>. Se compran <b>'+fmt(qty)+' piezas</b>.',
+    fields:[
+      {key:'u',label:'Ahorro por pieza',answer:u,prefix:'$'},
+      {key:'t',label:'Ahorro total',answer:tot,prefix:'$'},
+      {key:'p',label:'Porcentaje de ahorro',answer:pct,suffix:'%',tol:0.06}
+    ],
+    diagnose:function(v){
+      if(v[2]===u&&pct!==u)return 'El porcentaje no es la resta en pesos. Divide el ahorro entre el precio anterior y multiplica por 100.';
+      if(Math.abs(v[2]-u/nuevo*100)<0.06&&pct!==u/nuevo*100)return 'Dividiste entre el precio nuevo. El porcentaje de ahorro se calcula sobre el precio anterior.';
+      if(v[1]===u&&qty!==1)return 'Ese es el ahorro de una pieza. El total se obtiene multiplicando por la cantidad.';
+      return null;
+    },
+    solution:'<p>Ahorro = precio anterior − precio nuevo = '+money(ant)+' − '+money(nuevo)+' = <b>'+money(u)+'</b> por pieza.</p><p>Ahorro total = '+money(u)+' × '+fmt(qty)+' = <b>'+money(tot)+'</b>.</p><p>% de ahorro = '+money(u)+' ÷ '+money(ant)+' × 100 = <b>'+pct+' %</b>.</p>'
+  };
+}
+function genTCO(){
+  var pA,fA,dA,pB,fB,dB,tA,tB;
+  do{
+    pA=rnd([90,100,110]);fA=rnd([4,5,6]);dA=rnd([6,8,10]);
+    pB=pA+rnd([3,5,8]);fB=rnd([1,2,3]);dB=rnd([1,2,3]);
+    tA=pA+fA+dA;tB=pB+fB+dB;
+  }while(tA===tB);
+  var win=tA<tB?'Proveedor A':'Proveedor B';
+  return {
+    intro:'Dos proveedores cotizan la misma pieza. Calcula el costo total de propiedad (TCO) de cada uno y decide cuál conviene.',
+    table:'<table><thead><tr><th>Concepto</th><th class="num">Proveedor A</th><th class="num">Proveedor B</th></tr></thead><tbody>'
+      +'<tr><td>Precio</td><td class="num">'+money(pA)+'</td><td class="num">'+money(pB)+'</td></tr>'
+      +'<tr><td>Flete</td><td class="num">'+money(fA)+'</td><td class="num">'+money(fB)+'</td></tr>'
+      +'<tr><td>Costo estimado por defectos</td><td class="num">'+money(dA)+'</td><td class="num">'+money(dB)+'</td></tr></tbody></table>',
+    fields:[
+      {key:'a',label:'TCO del proveedor A',answer:tA,prefix:'$'},
+      {key:'b',label:'TCO del proveedor B',answer:tB,prefix:'$'},
+      {key:'w',label:'Conviene',type:'sel',options:['Proveedor A','Proveedor B'],answer:win}
+    ],
+    diagnose:function(v,res){
+      if(v[0]===pA&&v[1]===pB)return 'Solo copiaste los precios. El TCO suma también flete y costo por defectos.';
+      if(res[0]&&res[1]&&!res[2])return 'Tus dos TCO están bien. Conviene el que tiene el costo total más bajo, no el precio de lista más bajo.';
+      return null;
+    },
+    solution:'<p>TCO = precio + flete + defectos</p><p>A: '+pA+' + '+fA+' + '+dA+' = <b>'+money(tA)+'</b>. B: '+pB+' + '+fB+' + '+dB+' = <b>'+money(tB)+'</b>.</p><p>Conviene <b>'+win+'</b>'+(win==='Proveedor B'?', aunque su precio de lista sea mayor.':'.')+'</p>'
+  };
+}
+function genPond(){
+  var crit=[['Precio',0.30],['Capacidad',0.20],['Consumo de combustible',0.15],['Garantía',0.15],['Mantenimiento',0.10],['Tiempo de entrega',0.10]];
+  var sA,sB,tA,tB;
+  function tot(s){return Math.round(s.reduce(function(a,x,i){return a+x*crit[i][1];},0)*100)/100;}
+  do{
+    sA=crit.map(function(){return rint(5,10);});
+    sB=crit.map(function(){return rint(5,10);});
+    tA=tot(sA);tB=tot(sB);
+  }while(tA===tB);
+  var avgA=sA.reduce(function(a,b){return a+b;},0)/6;
+  var win=tA>tB?'Proveedor A':'Proveedor B';
+  return {
+    intro:'Compras evalúa dos autobuses para transporte de personal con una matriz ponderada. Calcula la puntuación total (sobre 10) de cada proveedor.',
+    table:'<table><thead><tr><th>Criterio</th><th class="num">Peso</th><th class="num">Prov. A</th><th class="num">Prov. B</th></tr></thead><tbody>'
+      +crit.map(function(c,i){return '<tr><td>'+c[0]+'</td><td class="num">'+Math.round(c[1]*100)+' %</td><td class="num">'+sA[i]+'</td><td class="num">'+sB[i]+'</td></tr>';}).join('')+'</tbody></table>',
+    fields:[
+      {key:'a',label:'Puntuación del proveedor A',answer:tA},
+      {key:'b',label:'Puntuación del proveedor B',answer:tB},
+      {key:'w',label:'Mejor evaluado',type:'sel',options:['Proveedor A','Proveedor B'],answer:win}
+    ],
+    diagnose:function(v){
+      if(Math.abs(v[0]-avgA)<0.02)return 'Calculaste un promedio simple. Multiplica cada calificación por su peso (en decimal) y suma los resultados.';
+      return null;
+    },
+    solution:'<p>Puntuación = Σ (peso × calificación)</p><p>A: '+sA.map(function(x,i){return crit[i][1]+'×'+x;}).join(' + ')+' = <b>'+fmt(tA)+'</b>.</p><p>B: '+sB.map(function(x,i){return crit[i][1]+'×'+x;}).join(' + ')+' = <b>'+fmt(tB)+'</b>.</p><p>Gana <b>'+win+'</b>.</p>'
+  };
+}
+function mkDias(inv,c,LT){
+  var dias=inv/c,falta=Math.max(0,LT-dias);
+  return {
+    intro:'La línea consume <b>'+fmt(c)+' piezas al día</b>. Hay <b>'+fmt(inv)+' piezas</b> en inventario y el proveedor tarda <b>'+LT+' días</b> en entregar.',
+    fields:[
+      {key:'d',label:'Días de inventario',answer:dias,suffix:'días'},
+      {key:'f',label:'Días de faltante potencial',answer:falta,suffix:'días'}
+    ],
+    diagnose:function(v,res){
+      if(res[0]&&!res[1])return 'Tus días de inventario están bien. El faltante es lead time menos días de inventario (si es negativo, no hay faltante: escribe 0).';
+      return null;
+    },
+    solution:'<p>Días de inventario = '+fmt(inv)+' ÷ '+fmt(c)+' = <b>'+fmt(dias)+' días</b>.</p><p>Faltante potencial = '+LT+' − '+fmt(dias)+' = <b>'+fmt(falta)+' días</b>.</p>'
+  };
+}
+function genDias(){
+  var c=rnd([200,300,400,500]),d=rint(2,4),LT=d+rint(1,3);
+  return mkDias(c*d,c,LT);
+}
+function genKPI(){
+  var tot=rnd([50,100,200,250]),pct=rnd([88,90,92,94,96]),ont=tot*pct/100;
+  var rec=rnd([5000,10000,20000]),dp=rnd([0.5,1,1.5,2]),def=rec*dp/100;
+  return {
+    intro:'En el trimestre el proveedor hizo <b>'+fmt(tot)+' entregas</b>, de las cuales <b>'+fmt(ont)+'</b> llegaron a tiempo. Además se recibieron <b>'+fmt(rec)+' piezas</b> y <b>'+fmt(def)+'</b> salieron defectuosas.',
+    fields:[
+      {key:'o',label:'Entregas a tiempo (OTD)',answer:pct,suffix:'%',tol:0.06},
+      {key:'q',label:'Porcentaje de defectos',answer:dp,suffix:'%',tol:0.006}
+    ],
+    diagnose:function(v){
+      if(v[0]===ont)return 'Ese es el número de entregas a tiempo. OTD es porcentaje: divide entre las entregas totales y multiplica por 100.';
+      return null;
+    },
+    solution:'<p>OTD = '+fmt(ont)+' ÷ '+fmt(tot)+' × 100 = <b>'+pct+' %</b>.</p><p>% de defectos = '+fmt(def)+' ÷ '+fmt(rec)+' × 100 = <b>'+dp+' %</b>.</p>'
+  };
+}
+
+/* ---------- navegación ---------- */
+var app=document.getElementById('app');
+var tabsEl=document.getElementById('tabs');
+var cur='home';
+function drawTabs(){
+  var tabs=[h('button',{type:'button',class:'tab','aria-current':cur==='home'?'page':null,onclick:function(){go('home');}},'Inicio')];
+  MODULES.forEach(function(m){
+    tabs.push(h('button',{type:'button',class:'tab','aria-current':cur===m.id?'page':null,onclick:function(){go(m.id);}},
+      h('span',{class:'n'},String(m.n)),m.name,h('span',{class:'tick'},doneIn(m)+'/'+m.ex.length)));
+  });
+  var sc=tabsEl.scrollLeft;
+  tabsEl.replaceChildren.apply(tabsEl,tabs);
+  tabsEl.scrollLeft=sc;
+  var d=doneAll();
+  document.getElementById('ovtxt').textContent=d+' / '+TOTAL+' ejercicios';
+  document.getElementById('ovbar').style.width=(TOTAL?d/TOTAL*100:0)+'%';
+}
+function go(id){
+  cur=id;
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+  draw();
+  window.scrollTo(0,0);
+}
+function pager(id){
+  var i=MODULES.findIndex(function(m){return m.id===id;});
+  var prev=i>0?MODULES[i-1]:null,next=i<MODULES.length-1?MODULES[i+1]:null;
+  return h('div',{class:'pager'},
+    prev?h('button',{type:'button',class:'btn ghost',onclick:function(){go(prev.id);}},'← '+prev.name):h('span'),
+    next?h('button',{type:'button',class:'btn',onclick:function(){go(next.id);}},next.name+' →'):h('button',{type:'button',class:'btn ghost',onclick:function(){go('home');}},'Volver al inicio'));
+}
+function draw(){
+  drawTabs();
+  var fn={home:renderHome,m1:renderM1,m2:renderM2,m3:renderM3,m4:renderM4,m5:renderM5,m6:renderM6}[cur]||renderHome;
+  app.replaceChildren(fn());
+}
+
+/* ---------- inicio ---------- */
+var resetArmed=false;
+function renderHome(){
+  var v=h('div',{class:'view'});
+  v.append(h('header',{class:'vhead'},
+    h('span',{class:'tag'},'Organización del departamento de compras'),
+    h('h2',{},'Practica lo que viste en clase'),
+    h('p',{class:'lead'},'Cada ejercicio te dice al momento si acertaste y por qué. Si te equivocas, recibes una pista y puedes volver a intentar. No hay calificación: es para que llegues a la entrega del organigrama sabiendo lo que haces.')));
+  v.append(lesson('Al terminar podrás',
+    '<ul class="goals"><li>Explicar por qué una empresa organiza sus compras y qué decide cada nivel.</li><li>Distinguir las responsabilidades de gerente, jefe, comprador, analista, auxiliar y desarrollo de proveedores.</li><li>Dimensionar una estructura según el tamaño de la empresa y armar un organigrama coherente.</li></ul>'));
+  var grid=h('div',{class:'mods'});
+  MODULES.forEach(function(m){
+    var d=doneIn(m);
+    grid.append(h('div',{class:'mod'},
+      h('span',{class:'num'},String(m.n)),
+      h('h3',{},m.name),
+      h('p',{},m.sub),
+      h('div',{class:'overall'},h('span',{},d+' / '+m.ex.length),h('div',{class:'bar'},h('i',{style:'width:'+(d/m.ex.length*100)+'%'}))),
+      h('div',{class:'actions'},h('button',{type:'button',class:'btn'+(d===m.ex.length?' ghost':''),onclick:function(){go(m.id);}},d===0?'Empezar':d===m.ex.length?'Repasar':'Continuar'))));
+  });
+  v.append(grid);
+  var resetBtn=h('button',{type:'button',class:'btn ghost',onclick:function(){
+    if(!resetArmed){resetArmed=true;resetBtn.textContent='Confirmar: borrar mi avance';return;}
+    resetArmed=false;prog={};save();draw();
+  }},'Borrar mi avance');
+  v.append(h('div',{class:'actions'},resetBtn));
+  return v;
+}
+
+/* ---------- módulo 1 ---------- */
+function ar(prompt,isAuth,okWhy,badWhy){
+  return {prompt:prompt,options:[
+    {t:'Autoridad',ok:isAuth,why:isAuth?okWhy:badWhy},
+    {t:'Responsabilidad',ok:!isAuth,why:!isAuth?okWhy:badWhy}
+  ]};
+}
+var LIM=[['Comprador',10000],['Jefe de compras',100000],['Gerente',500000],['Director',Infinity]];
+function matQ(amount,label){
+  var best=LIM.findIndex(function(l){return amount<=l[1];});
+  return {prompt:'¿Quién debe aprobar una compra de <b>'+money(amount)+'</b>?'+(label||''),options:LIM.map(function(l,i){
+    var ok=i===best,why;
+    if(ok)why=(i===0?'Está dentro del límite del comprador ('+money(10000)+').':'Es el nivel más bajo cuyo límite alcanza ('+(l[1]===Infinity?'más de '+money(500000):'hasta '+money(l[1]))+').')+' Delegar así evita que la gerencia decida todo.';
+    else if(i<best)why='Su límite es '+money(l[1])+' y la compra es de '+money(amount)+': lo excede. Tiene que subir de nivel.';
+    else why='Podría aprobar esa cifra, pero hay un nivel más bajo con autoridad suficiente ('+LIM[best][0]+'). Delegar evita saturar a la gerencia.';
+    return {t:l[0],ok:ok,why:why};
+  })};
+}
+function sodSim(){
+  var steps=[
+    {id:1,t:'Dar de alta al proveedor',nat:['Compras']},
+    {id:2,t:'Solicitar el material',nat:['Producción']},
+    {id:3,t:'Autorizar la compra',nat:['Dirección','Compras']},
+    {id:4,t:'Recibir el material',nat:['Almacén','Calidad']},
+    {id:5,t:'Autorizar el pago de la factura',nat:['Finanzas']}
+  ];
+  var conflicts=[
+    [1,5,'quien da de alta al proveedor no debe autorizar su pago: podría inventar una empresa y pagarle'],
+    [1,3,'quien crea al proveedor no debe autorizar la compra que se le hace'],
+    [2,3,'quien pide el material no debe aprobar su propia solicitud'],
+    [3,4,'quien autoriza la compra no debe confirmar que se recibió'],
+    [3,5,'quien autoriza la compra no debe autorizar también su pago'],
+    [4,5,'quien recibe no debe autorizar el pago: podría confirmar entregas falsas y cobrarlas']
+  ];
+  var people=['Juan','Producción','Compras','Almacén','Calidad','Finanzas','Dirección'];
+  var vals={1:'Juan',2:'Juan',3:'Juan',4:'Juan',5:'Juan'};
+  var wrap=h('div',{class:'sod'});
+  var meterBar=h('i',{style:'width:100%'});
+  var meterTxt=h('span',{},'');
+  var slot=h('div',{class:'fbslot','aria-live':'polite'});
+  var done=false;
+  var rows=steps.map(function(s){
+    var sel=h('select',{id:'sod-'+s.id,onchange:function(){vals[s.id]=sel.value;evaluate(true);}},
+      people.map(function(p){return h('option',{value:p},p==='Juan'?'Juan (una sola persona)':p);}));
+    return h('div',{class:'sodrow'},h('div',{class:'st'},h('em',{},'Paso '+s.id),s.t),sel);
+  });
+  function evaluate(user){
+    var hits=conflicts.filter(function(c){return vals[c[0]]===vals[c[1]];});
+    meterBar.style.width=(hits.length/conflicts.length*100)+'%';
+    meterTxt.textContent='Conflictos de control: '+hits.length+' de '+conflicts.length;
+    if(hits.length){
+      var name=function(id){return steps[id-1].t.toLowerCase();};
+      slot.replaceChildren(fb('bad','Hay riesgo de error o fraude','<ul>'+hits.map(function(c){return '<li><b>'+vals[c[0]]+'</b> hace «'+name(c[0])+'» y «'+name(c[1])+'»: '+c[2]+'.</li>';}).join('')+'</ul>'));
+      return;
+    }
+    var notes=steps.filter(function(s){return vals[s.id]!=='Juan'&&s.nat.indexOf(vals[s.id])<0;});
+    if(notes.length){
+      slot.replaceChildren(fb('part','Sin conflictos de control, con observaciones','<ul>'+notes.map(function(s){return '<li>«'+s.t+'» normalmente lo hace '+s.nat.join(' o ')+', no '+vals[s.id]+'. Revisa si tu asignación tiene sentido.</li>';}).join('')+'</ul>'));
+    }else{
+      slot.replaceChildren(fb('ok','Funciones segregadas','Ninguna persona ni área controla dos pasos incompatibles. Producción solicita, Compras gestiona, Almacén recibe y Finanzas paga: eso es segregación de funciones.'));
+    }
+    if(user&&!done){done=true;markDone('m1c');}
+  }
+  wrap.append(meterWrap(),rows,slot);
+  function meterWrap(){return h('div',{class:'meter'},meterTxt,h('div',{class:'bar'},meterBar));}
+  evaluate(false);
+  return wrap;
+}
+function renderM1(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(1,'Organizar','Una empresa no solo necesita personas. Necesita saber qué hace cada una, qué puede decidir, de qué responde y a quién reporta.'));
+  v.append(lesson('Lo esencial',
+    '<p><b>Autoridad</b> es el derecho formal de tomar ciertas decisiones, por ejemplo aprobar una compra de hasta $500,000. <b>Responsabilidad</b> es la obligación de responder por el resultado, por ejemplo verificar que la cotización y las especificaciones coincidan.</p>'
+    +'<p>Con una compra de $800,000, el comprador la gestiona (responsabilidad), pero solo el director tiene la autoridad final de aprobarla.</p>'));
+  var s1=qset('m1a',[
+    ar('Aprobar una compra de hasta $500,000.',true,'Es el derecho formal de decidir, con un límite de monto.','Aprobar es decidir con derecho formal, y eso es autoridad. La responsabilidad es responder por el resultado.'),
+    ar('Verificar que la cotización y las especificaciones coincidan.',false,'Es una obligación de la que el comprador responde.','Verificar es una obligación de la que se responde, no un derecho de decidir hasta cierto monto.'),
+    ar('Aprobar una operación de $800,000 cuando el gerente solo llega a $500,000.',true,'Quien aprueba por encima del límite del gerente tiene la autoridad final: el director.','Aprobar por encima del límite del gerente es una decisión con derecho formal: autoridad.'),
+    ar('Responder porque la orden de compra esté bien elaborada.',false,'Responder por el resultado de una actividad es responsabilidad.','«Responder por» es la definición de responsabilidad.'),
+    ar('Decidir si se firma un contrato de largo plazo con un proveedor estratégico.',true,'Es una decisión que se toma con derecho formal en el nivel gerencial.','Decidir un compromiso de largo plazo es ejercer autoridad.')
+  ],'row');
+  v.append(exWrap('m1a','Autoridad o responsabilidad','Clasifica cada enunciado.',s1));
+  var s2=qset('m1b',[matQ(8500),matQ(85000),matQ(100000,' El límite del jefe incluye esa cifra exacta.'),matQ(350000),matQ(800000)],'row');
+  var table=h('div',{class:'tablewrap',html:'<table><thead><tr><th>Puesto</th><th class="num">Autoriza</th></tr></thead><tbody><tr><td>Comprador</td><td class="num">Hasta $10,000</td></tr><tr><td>Jefe de compras</td><td class="num">Hasta $100,000</td></tr><tr><td>Gerente</td><td class="num">Hasta $500,000</td></tr><tr><td>Director</td><td class="num">Más de $500,000</td></tr></tbody></table>'});
+  v.append(exWrap('m1b','Matriz de autoridad','Usa esta matriz de ejemplo. Los límites reales dependen de cada empresa.',h('div',{class:'qset'},table,s2)));
+  v.append(exWrap('m1c','Segregación de funciones','Hoy Juan hace todo el proceso. Reparte los cinco pasos entre áreas hasta que no quede ningún conflicto de control.',sodSim()));
+  v.append(pager('m1'));
+  return v;
+}
+
+/* ---------- módulo 2 ---------- */
+var ACTS=[
+  {t:'Negociar precio',best:['Comprador'],part:['Jefe','Gerente'],why:'El comprador cotiza y negocia las condiciones comerciales dentro de sus límites.',partWhy:'Jefe o gerente intervienen cuando el monto o el riesgo superan el límite del comprador, pero la negociación diaria es del comprador.',hint:'quién cotiza y negocia día a día'},
+  {t:'Analizar gastos',best:['Analista'],part:[],why:'El analista trabaja con información: historial de precios, gastos, tendencias y consumos.',hint:'quién trabaja con información y tendencias'},
+  {t:'Autorizar estrategia',best:['Gerente'],part:[],why:'Definir la estrategia (proveedores estratégicos, riesgos, costos) es decisión del gerente.',hint:'una decisión del departamento completo, no de operación'},
+  {t:'Emitir orden',best:['Comprador'],part:['Auxiliar'],why:'El comprador crea la orden y responde porque esté bien elaborada.',partWhy:'El auxiliar puede capturarla, pero quien responde por ella es el comprador.',hint:'quién ejecuta la compra y responde por ella'},
+  {t:'Evaluar proveedor',best:['Desarrollo de proveedores'],part:['Comprador','Analista'],why:'Desarrollo de proveedores analiza calidad, entrega, capacidad, procesos, costos y riesgos del proveedor.',partWhy:'El comprador y el analista aportan datos, pero evaluar y mejorar al proveedor es la función de desarrollo de proveedores.',hint:'quién busca mejorar el desempeño del proveedor'},
+  {t:'Dar seguimiento',best:['Comprador'],part:['Auxiliar','Jefe'],why:'El comprador vigila que el proveedor cumpla la orden y resuelve problemas.',partWhy:'El auxiliar apoya con el seguimiento administrativo y el jefe revisa órdenes atrasadas, pero el seguimiento de cada orden es del comprador.',hint:'quién vigila que el proveedor cumpla'},
+  {t:'Revisar KPI',best:['Gerente'],part:['Jefe','Analista'],why:'El gerente revisa los indicadores y responde por los resultados del departamento.',partWhy:'El analista los prepara y el jefe los vigila en la operación, pero quien los revisa para decidir es el gerente.',hint:'quién responde por los resultados'},
+  {t:'Archivar documentación',best:['Auxiliar'],part:[],why:'Captura, archivo y expedientes son soporte administrativo: función del auxiliar.',hint:'una tarea de soporte administrativo'},
+  {t:'Negociar contrato estratégico',best:['Gerente'],part:[],why:'Los contratos importantes y los compromisos de largo plazo los negocia el gerente.',hint:'compromisos de largo plazo con proveedores clave'}
+];
+var PUESTOS=['Gerente','Jefe','Comprador','Analista','Auxiliar','Desarrollo de proveedores'];
+function whoEx(){
+  var wrap=h('div',{class:'rows'});
+  var counter=h('span',{class:'count'},'0 / '+ACTS.length+' resueltas');
+  var okSet={},finished=false;
+  ACTS.forEach(function(a,i){
+    var slot=h('div',{class:'fbslot','aria-live':'polite'});
+    var sel=h('select',{id:'who-'+i,'aria-label':a.t,onchange:function(){
+      var val=sel.value;
+      if(!val){slot.replaceChildren();return;}
+      sel.classList.remove('ok','bad');
+      if(a.best.indexOf(val)>=0){sel.classList.add('ok');okSet[i]=1;slot.replaceChildren(fb('ok','Correcto',a.why));}
+      else if(a.part.indexOf(val)>=0){sel.classList.add('ok');okSet[i]=1;slot.replaceChildren(fb('part','Aceptable',a.partWhy));}
+      else{sel.classList.add('bad');delete okSet[i];slot.replaceChildren(fb('bad','Todavía no','No es el puesto más indicado. Piensa en '+a.hint+'.'));}
+      var n=Object.keys(okSet).length;
+      counter.textContent=n+' / '+ACTS.length+' resueltas';
+      if(n===ACTS.length&&!finished){finished=true;markDone('m2');}
+    }},h('option',{value:''},'Elige un puesto…'),PUESTOS.map(function(p){return h('option',{value:p},p);}));
+    wrap.append(h('div',{class:'arow'},h('div',{class:'arow-main'},h('b',{},(i+1)+'. '+a.t),sel),slot));
+  });
+  return h('div',{class:'qset'},counter,wrap);
+}
+function renderM2(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(2,'Puestos','Cada puesto tiene una razón de existir. Aquí no siempre hay una sola respuesta, pero sí hay una razón.'));
+  v.append(lesson('Lo esencial',
+    '<div class="defs">'
+    +'<div class="def"><b>Gerente</b><span>Estrategia, presupuesto, contratos importantes, riesgos e indicadores.</span></div>'
+    +'<div class="def"><b>Jefe</b><span>Coordinación operativa: reparte requisiciones, prioriza y detecta atrasos.</span></div>'
+    +'<div class="def"><b>Comprador</b><span>Cotiza, negocia, emite órdenes y da seguimiento.</span></div>'
+    +'<div class="def"><b>Analista</b><span>Información y análisis: precios, gastos, tendencias, ahorros.</span></div>'
+    +'<div class="def"><b>Auxiliar</b><span>Soporte administrativo: captura, archivo, expedientes.</span></div>'
+    +'<div class="def"><b>Desarrollo de proveedores</b><span>Eleva la capacidad y el desempeño del proveedor.</span></div></div>'));
+  v.append(exWrap('m2','¿Quién debe hacer qué?','Elige el puesto para cada actividad. Si tu respuesta es aceptable pero no la mejor, te lo decimos.',whoEx()));
+  v.append(pager('m2'));
+  return v;
+}
+
+/* ---------- módulo 3 ---------- */
+function renderM3(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(3,'Estructura','¿Cuántas personas necesita un departamento de compras? Depende de la empresa.'));
+  v.append(lesson('Lo esencial',
+    '<p>Depende del tamaño, el número de compras y de proveedores, las plantas, la complejidad técnica, el dinero involucrado y el nivel de automatización.</p>'
+    +'<ul><li><b>Pequeña:</b> director general → administrador → responsable de compras.</li><li><b>Mediana:</b> jefe de compras con compradores por categoría y un auxiliar.</li><li><b>Grande:</b> director de supply chain → gerente de compras → compras directas, indirectas, desarrollo de proveedores, analítica y contratos.</li></ul>'));
+  v.append(exWrap('m3a','Empresa A: taller industrial','15 trabajadores, 20 proveedores y 30 órdenes de compra al mes.',qset('m3a',[
+    {prompt:'¿Qué estructura propones?',options:[
+      {t:'Un responsable de compras que reporta al administrador',ok:true,why:'Con 30 órdenes al mes, una persona puede cotizar, negociar, ordenar y dar seguimiento.'},
+      {t:'Gerente de compras, tres jefes y cinco compradores',ok:false,why:'Está sobredimensionada: 30 órdenes y 20 proveedores no justifican tantos niveles ni plazas.'},
+      {t:'Director de supply chain con compras por región',ok:false,why:'Una estructura geográfica solo tiene sentido con operaciones distribuidas. Este taller opera en un sitio.'}
+    ]},
+    {prompt:'¿Necesita compradores especializados por categoría?',options:[
+      {t:'Sí, uno por categoría',ok:false,why:'Con ese volumen no hay trabajo suficiente para especializar. La especialización se justifica cuando crece el número de categorías y de órdenes.'},
+      {t:'No, una persona cubre todas',ok:true,why:'El volumen no justifica la especialización. Sí conviene separar quién paga de quién compra (segregación de funciones), por eso el responsable reporta al administrador.'}
+    ]}
+  ]),''));
+  v.append(exWrap('m3b','Empresa B: manufacturera','300 trabajadores, 150 proveedores y 400 órdenes al mes (unas 20 por día hábil).',qset('m3b',[
+    {prompt:'¿Qué estructura propones?',options:[
+      {t:'Un solo comprador sin jefe',ok:false,why:'Unas 20 órdenes diarias concentradas en una persona generan atrasos y mucho riesgo de control.'},
+      {t:'Jefe de compras, comprador de materiales, comprador de servicios y un auxiliar',ok:true,why:'Reparte la carga por categoría, tiene coordinación y deja la captura y el archivo a un auxiliar.'},
+      {t:'Director, dos gerentes, cuatro jefes y diez compradores',ok:false,why:'Es una estructura de empresa grande. Con 150 proveedores sería costosa y burocrática.'}
+    ]},
+    {prompt:'¿Conviene separar compras directas e indirectas con dos jefaturas?',options:[
+      {t:'Sí, dos jefaturas',ok:false,why:'Todavía no. Un jefe puede coordinar a compradores por categoría. Dos jefaturas se justifican cuando el volumen y la complejidad crecen.'},
+      {t:'No: un jefe y compradores por categoría',ok:true,why:'Se logra la especialización sin multiplicar niveles.'}
+    ]}
+  ])));
+  v.append(exWrap('m3c','Empresa C: automotriz multinacional','8,000 trabajadores, 1,200 proveedores y 5 plantas. Marca todo lo que sí necesita.',h('div',{},multiQ({
+    prompt:'Selecciona los elementos de la estructura que esta empresa necesita.',
+    options:[
+      {t:'Director de supply chain',ok:true,why:'Con cinco plantas y 1,200 proveedores se necesita una dirección que alinee compras con logística y producción.'},
+      {t:'Gerentes de compras',ok:true,why:'Con ese volumen un solo gerente no coordina todo; se divide por categoría, región o planta.'},
+      {t:'Compras directas e indirectas separadas',ok:true,why:'Las compras directas (asientos, acero, llantas) y las indirectas (EPP, servicios, MRO) tienen lógica y riesgos distintos.'},
+      {t:'Desarrollo de proveedores',ok:true,why:'Con 1,200 proveedores conviene mejorar a los críticos, no solo reemplazarlos.'},
+      {t:'Analistas de compras',ok:true,why:'Sin analítica de gasto, precios y desempeño no se pueden tomar decisiones con este volumen.'},
+      {t:'Un solo responsable de compras sin jerarquía',ok:false,why:'Es la estructura de un taller pequeño. Aquí colapsaría por volumen y por falta de control.'},
+      {t:'Que cada planta compre sin coordinación',ok:false,why:'Se pierde poder de negociación, se duplican proveedores y el control se debilita. Si se descentraliza, debe haber políticas comunes.'}
+    ],
+    explain:'Estructura completa: dirección, gerencias por categoría o región, compras directas e indirectas, desarrollo de proveedores y analítica.',
+    onSolved:function(){markDone('m3c');}
+  }))));
+  var items=[
+    ['Acero para fabricar el producto','Directa'],['Asientos de un automóvil','Directa'],['Cascos de seguridad para trabajadores','Indirecta'],
+    ['Papelería de oficina','Indirecta'],['Rodamientos para el mantenimiento de una máquina','MRO'],['Lubricantes para equipos','MRO'],
+    ['Servicio de transporte de personal','Indirecta'],['Llantas para vehículos que se arman en la planta','Directa']
+  ];
+  var cls=items.map(function(it){
+    var opts=[
+      {t:'Directa',ok:it[1]==='Directa',why:'Forma parte del producto terminado.'},
+      {t:'Indirecta',ok:it[1]==='Indirecta',why:'Es necesaria para operar, pero no forma parte del producto terminado.'},
+      {t:'MRO',ok:it[1]==='MRO',why:'Es mantenimiento, reparación u operaciones: refacciones, lubricantes, herramientas.'}
+    ];
+    opts.forEach(function(o){
+      if(!o.ok){
+        o.why=it[1]==='Directa'?'Este artículo forma parte del producto terminado, así que es compra directa.':it[1]==='MRO'?'Se usa para mantener, reparar u operar equipos: es MRO (que es un tipo de compra indirecta).':'Es necesaria para operar pero no forma parte del producto ni es refacción de mantenimiento: indirecta.';
+      }
+    });
+    return {prompt:'<b>'+it[0]+'</b>',options:opts};
+  });
+  v.append(exWrap('m3d','Directas, indirectas y MRO','Clasifica cada compra.',qset('m3d',cls,'row')));
+  v.append(pager('m3'));
+  return v;
+}
+
+/* ---------- módulo 4 ---------- */
+function renderM4(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(4,'Las 5 correctas','Comprar bien es mucho más que comprar barato. Aquí practicas los criterios y las cuentas que los respaldan.'));
+  v.append(lesson('Fórmulas del módulo',
+    '<p>Compras busca calidad, cantidad, precio, tiempo y proveedor correctos. «Precio correcto» no significa precio más bajo: significa costo total.</p>'
+    +'<div class="chips"><span class="chip">PR = d × LT + SS</span><span class="chip">Ahorro = anterior − nuevo</span><span class="chip">% = ahorro ÷ anterior × 100</span><span class="chip">TCO = precio + flete + defectos</span><span class="chip">Σ peso × calificación</span><span class="chip">OTD = a tiempo ÷ total × 100</span></div>'));
+  var cor=['Calidad correcta','Cantidad correcta','Precio correcto','Tiempo correcto','Proveedor correcto'];
+  function fiveQ(prompt,right,why){
+    return {prompt:prompt,options:cor.map(function(c){
+      return {t:c,ok:c===right,why:c===right?why:'No es la que falló aquí. Pregúntate qué condición exacta no se cumplió.'};
+    })};
+  }
+  v.append(exWrap('m4a','¿Cuál de las 5 falló?','Identifica el criterio que no se cumplió en cada situación.',qset('m4a',[
+    fiveQ('Se pidieron tornillos clase 10.9. El proveedor más barato entregó clase 8.8.','Calidad correcta','No cumple la especificación. Aunque sea más barato, no sirve.'),
+    fiveQ('Se compraron 10 meses de un material de lento movimiento. Ahora falta bodega y el material se está volviendo obsoleto.','Cantidad correcta','Comprar de más inmoviliza capital y espacio, y genera obsolescencia.'),
+    fiveQ('El material es excelente y barato, pero llegó después de que la producción se detuvo.','Tiempo correcto','Un buen precio y buena calidad no sirven si el material llega tarde: la compra fracasó.'),
+    fiveQ('Se eligió la pieza de $90 sin ver que tiene 5 % de defectos, contra $100 y 0.2 % de defectos de otro proveedor.','Precio correcto','El precio correcto es el de menor costo total, no el de lista más bajo.'),
+    fiveQ('El proveedor con mejor precio no tiene capacidad ni solidez financiera para surtir el volumen.','Proveedor correcto','Al proveedor se le evalúa en capacidad, calidad, entregas, solidez financiera y riesgos, no solo en precio.')
+  ])));
+  v.append(exWrap('m4b','Punto de reorden','Calcula cuándo lanzar la orden. Cada vez que pulses «Otro ejercicio» cambian los datos.',numEx({id:'m4b',gen:genPR,formula:'PR = d × LT + SS. Primero multiplica el consumo diario por el lead time y luego suma el stock de seguridad.'})));
+  v.append(exWrap('m4c','Ahorro','Calcula el ahorro unitario, el total y el porcentaje.',numEx({id:'m4c',gen:genAhorro,formula:'Ahorro = precio anterior − precio nuevo. Ahorro total = ahorro × cantidad. % = ahorro ÷ precio anterior × 100.'})));
+  v.append(exWrap('m4d','Costo total de propiedad','El precio de lista no es todo. Calcula el TCO y decide.',numEx({id:'m4d',gen:genTCO,formula:'TCO = precio + flete + costo por defectos. Conviene el que tiene el TCO más bajo.'})));
+  v.append(exWrap('m4e','Evaluación ponderada','Aplica los pesos de la matriz y decide con datos, no con intuición.',numEx({id:'m4e',gen:genPond,formula:'Puntuación = suma de (peso × calificación). Usa los pesos como decimales: 30 % = 0.30.'})));
+  v.append(exWrap('m4f','Días de inventario y faltante','¿Alcanza el inventario hasta que llegue el pedido?',numEx({id:'m4f',gen:genDias,formula:'Días de inventario = inventario ÷ consumo diario. Faltante = lead time − días de inventario.'})));
+  v.append(exWrap('m4g','Indicadores del proveedor','Calcula OTD y porcentaje de defectos.',numEx({id:'m4g',gen:genKPI,formula:'OTD = entregas a tiempo ÷ entregas totales × 100. % defectos = defectuosas ÷ recibidas × 100.'})));
+  v.append(pager('m4'));
+  return v;
+}
+
+/* ---------- módulo 5: organigrama ---------- */
+var POS={
+  gerente:{name:'Gerente de Compras y Abastecimientos',rep:'Director de Operaciones',fn:'define la estrategia general del departamento: proveedores estratégicos, riesgos, costos y contratos importantes',
+    resp:['Definir estrategia','Administrar presupuesto','Negociar contratos importantes','Autorizar proveedores','Revisar indicadores','Coordinar jefes y compradores','Administrar riesgos de suministro'],auth:'Aprueba compras hasta $500,000 y autoriza proveedores. Lo que excede ese monto pasa al director.'},
+  jefeD:{name:'Jefe de Compras Directas',rep:'Gerente de Compras',fn:'coordina la operación diaria de las compras directas, las que forman parte del producto',
+    resp:['Repartir requisiciones entre compradores','Priorizar lo urgente','Detectar órdenes atrasadas y proveedores con problemas','Revisar compras que requieren autorización'],auth:'Autoriza compras hasta $100,000.'},
+  jefeI:{name:'Jefe de Compras Indirectas',rep:'Gerente de Compras',fn:'coordina la operación diaria de las compras indirectas: MRO, servicios y otros insumos de operación',
+    resp:['Repartir requisiciones entre compradores','Priorizar lo urgente','Detectar órdenes atrasadas y proveedores con problemas','Revisar compras que requieren autorización'],auth:'Autoriza compras hasta $100,000.'},
+  cMP:{name:'Comprador de materia prima',rep:'Jefe de Compras Directas',fn:'garantiza el abastecimiento de las materias primas que se usan directamente en producción',
+    resp:['Cotizar','Negociar','Emitir órdenes','Dar seguimiento','Evaluar proveedores'],auth:'Negocia condiciones comerciales dentro de los límites de la empresa y autoriza hasta $10,000.'},
+  cComp:{name:'Comprador de componentes',rep:'Jefe de Compras Directas',fn:'garantiza el abastecimiento de los componentes que forman parte del producto terminado',
+    resp:['Cotizar','Negociar','Emitir órdenes','Dar seguimiento','Evaluar proveedores'],auth:'Negocia condiciones comerciales dentro de los límites de la empresa y autoriza hasta $10,000.'},
+  cMRO:{name:'Comprador MRO',rep:'Jefe de Compras Indirectas',fn:'abastece mantenimiento, reparación y operaciones: rodamientos, aceites, herramientas y refacciones',
+    resp:['Cotizar','Negociar','Emitir órdenes','Dar seguimiento','Atender urgencias de mantenimiento'],auth:'Negocia condiciones comerciales dentro de los límites de la empresa y autoriza hasta $10,000.'},
+  cServ:{name:'Comprador de servicios',rep:'Jefe de Compras Indirectas',fn:'contrata servicios: transporte de personal, limpieza, seguridad y mantenimiento',
+    resp:['Cotizar','Negociar','Emitir órdenes','Dar seguimiento','Evaluar proveedores de servicio'],auth:'Negocia condiciones comerciales dentro de los límites de la empresa y autoriza hasta $10,000.'},
+  ingDes:{name:'Ingeniero de desarrollo de proveedores',rep:'Gerente de Compras',fn:'busca aumentar la capacidad y el desempeño de los proveedores en calidad, entrega, procesos, costos y riesgos',
+    resp:['Diagnosticar proveedores','Proponer planes de mejora','Trabajar con proveedores en programación, inventarios y transporte','Coordinarse con Calidad'],auth:'Recomienda y propone mejoras. No emite órdenes ni autoriza pagos.'},
+  analistaProv:{name:'Analista de proveedores',rep:'Ingeniero de desarrollo de proveedores',fn:'reúne y analiza datos del desempeño de los proveedores: calidad, entregas y riesgos',
+    resp:['Calcular indicadores (OTD, defectos)','Mantener el historial de cada proveedor','Alertar sobre riesgos'],auth:'Sin autoridad de compra. Recomienda con datos.'},
+  analista:{name:'Analista de compras',rep:'Gerente de Compras',fn:'se concentra en información y análisis: historial de precios, gastos, tendencias, ahorros y consumos',
+    resp:['Analizar gasto y precios','Reportar ahorros y consumos','Preparar indicadores para la gerencia'],auth:'Recomienda con datos. No autoriza compras.'},
+  aux:{name:'Auxiliar administrativo',rep:'Gerente de Compras',fn:'da soporte administrativo: captura, archivo, expedientes, correos y actualización de información',
+    resp:['Capturar información','Archivar y resguardar expedientes','Dar seguimiento administrativo','Enviar y recibir correos'],auth:'Sin autoridad de compra. Resguarda la documentación.'},
+  operador:{name:'Operador de línea',distractor:'Es un puesto de Producción. Producción solicita materiales mediante requisiciones, pero sus puestos no forman parte del organigrama de Compras.'},
+  contador:{name:'Contador de Finanzas',distractor:'Finanzas paga las facturas. Separar a quien compra de quien paga es parte de la segregación de funciones, por eso Finanzas no depende de Compras.'},
+  gProd:{name:'Gerente de Producción',distractor:'Producción es un cliente interno de Compras, no depende de ella. Si dependiera de Producción, el comprador recibiría órdenes contradictorias (se rompe la unidad de mando).'}
+};
+var SLOTS=[
+  {id:'ger',ph:'Nivel gerencia',acc:['gerente'],parent:'Director de Operaciones'},
+  {id:'jd',ph:'Nivel jefatura',acc:['jefeD'],parent:'Gerente de Compras'},
+  {id:'cd1',ph:'Nivel ejecución',acc:['cMP','cComp'],parent:'Jefe de Compras Directas'},
+  {id:'cd2',ph:'Nivel ejecución',acc:['cMP','cComp'],parent:'Jefe de Compras Directas'},
+  {id:'ji',ph:'Nivel jefatura',acc:['jefeI'],parent:'Gerente de Compras'},
+  {id:'ci1',ph:'Nivel ejecución',acc:['cMRO','cServ'],parent:'Jefe de Compras Indirectas'},
+  {id:'ci2',ph:'Nivel ejecución',acc:['cMRO','cServ'],parent:'Jefe de Compras Indirectas'},
+  {id:'dev',ph:'Nivel jefatura',acc:['ingDes'],parent:'Gerente de Compras'},
+  {id:'ap',ph:'Nivel ejecución',acc:['analistaProv'],parent:'Ingeniero de desarrollo de proveedores'},
+  {id:'an',ph:'Apoyo',acc:['analista'],parent:'Gerente de Compras'},
+  {id:'au',ph:'Apoyo',acc:['aux'],parent:'Gerente de Compras'}
+];
+function slotDef(id){return SLOTS.filter(function(s){return s.id===id;})[0];}
+function renderM5(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(5,'Organigrama','Arma el departamento de Motores del Norte S.A.: 500 trabajadores, 180 proveedores y operación las 24 horas.'));
+  v.append(lesson('Cómo se usa',
+    '<p>Elige un puesto de la lista y luego toca el lugar donde va, o arrástralo. Si no va ahí, te explicamos por qué. Entre los puestos hay tres que no pertenecen a Compras: descártalos en la zona roja.</p>'
+    +'<p>Cada puesto bien colocado muestra su ficha: a quién reporta, función, responsabilidades y autoridad. Esa es la información que pide tu evidencia.</p>'));
+  var st={placed:{},out:[],sel:null,drag:null,msg:null,ficha:null,mistakes:0,done:false};
+  var order=shuffle(Object.keys(POS));
+  var host=h('div',{class:'builder'});
+  var below=h('div',{class:'qset'});
+  function remaining(){return order.filter(function(id){return Object.keys(st.placed).map(function(k){return st.placed[k];}).indexOf(id)<0&&st.out.indexOf(id)<0;});}
+  function attempt(pid,sid){
+    var pos=POS[pid];
+    if(sid==='out'){
+      if(pos.distractor){st.out.push(pid);st.msg=fb('ok','Descartado',pos.distractor);st.ficha=null;}
+      else{st.mistakes++;st.msg=fb('bad','Ese sí pertenece a Compras',pos.name+' '+pos.fn+'. Colócalo en el organigrama.');}
+    }else{
+      var slot=slotDef(sid);
+      if(st.placed[sid]){st.msg=fb('info','Lugar ocupado','Toca el puesto colocado para ver su ficha o quitarlo.');}
+      else if(slot.acc.indexOf(pid)>=0){st.placed[sid]=pid;st.ficha=pid;st.msg=fb('ok','Bien colocado',pos.name+' reporta a '+pos.rep+'.');}
+      else{
+        st.mistakes++;
+        var why;
+        if(pos.distractor)why=pos.distractor;
+        else if(slot.parent===pos.rep)why=pos.name+' '+pos.fn+'. Reporta al mismo nivel que este lugar, pero su rama es otra: revisa qué tipo de compra o función atiende.';
+        else why=pos.name+' '+pos.fn+'. Por eso reporta a '+pos.rep+', no a '+slot.parent+'.';
+        st.msg=fb('bad','Ese no va ahí',why);
+      }
+    }
+    st.sel=null;
+    if(!st.done&&remaining().length===0){
+      st.done=true;markDone('m5');
+    }
+    render();
+  }
+  function slotBtn(id){
+    var s=slotDef(id),pid=st.placed[id];
+    var b=h('button',{type:'button',class:'slot'+(pid?' filled':'')+(st.sel&&!pid?' armed':''),'data-slot':id,
+      onclick:function(){
+        if(st.sel){attempt(st.sel,id);}
+        else if(pid){st.ficha=pid;st.msg=null;render();}
+        else{st.msg=fb('info','Primero elige un puesto','Toca un puesto de la lista y luego el lugar donde va.');render();}
+      },
+      ondragover:function(e){e.preventDefault();b.classList.add('over');},
+      ondragleave:function(){b.classList.remove('over');},
+      ondrop:function(e){e.preventDefault();b.classList.remove('over');var d=st.drag;st.drag=null;if(d)attempt(d,id);}
+    },pid?POS[pid].name:s.ph);
+    return b;
+  }
+  function render(){
+    var left=h('div',{class:'pool'},h('h4',{},'Puestos por colocar ('+remaining().length+')'));
+    remaining().forEach(function(id){
+      left.append(h('button',{type:'button',class:'card'+(st.sel===id?' sel':''),draggable:'true',
+        onclick:function(){st.sel=(st.sel===id?null:id);st.msg=null;render();},
+        ondragstart:function(e){st.drag=id;try{e.dataTransfer.setData('text/plain',id);e.dataTransfer.effectAllowed='move';}catch(x){}}
+      },POS[id].name));
+    });
+    var out=h('button',{type:'button',class:'out',
+      onclick:function(){if(st.sel)attempt(st.sel,'out');else{st.msg=fb('info','Zona de descarte','Aquí van los puestos que no pertenecen al departamento de Compras. Elige primero un puesto de la lista.');render();}},
+      ondragover:function(e){e.preventDefault();out.classList.add('over');},
+      ondragleave:function(){out.classList.remove('over');},
+      ondrop:function(e){e.preventDefault();out.classList.remove('over');var d=st.drag;st.drag=null;if(d)attempt(d,'out');}
+    },'No pertenece a Compras ('+st.out.length+'/3)');
+    left.append(out);
+    var org=h('div',{class:'org'},
+      h('div',{class:'node'},'Director de Operaciones'),h('div',{class:'vline'}),
+      slotBtn('ger'),h('div',{class:'vline'}),
+      h('div',{class:'branches'},
+        h('div',{class:'branch'},h('h4',{},'Compras directas'),slotBtn('jd'),slotBtn('cd1'),slotBtn('cd2')),
+        h('div',{class:'branch'},h('h4',{},'Compras indirectas'),slotBtn('ji'),slotBtn('ci1'),slotBtn('ci2')),
+        h('div',{class:'branch'},h('h4',{},'Desarrollo de proveedores'),slotBtn('dev'),slotBtn('ap'))),
+      h('div',{class:'staff'},h('h4',{style:'grid-column:1/-1'},'Apoyo a la gerencia'),slotBtn('an'),slotBtn('au')));
+    var right=h('div',{class:'qset'},org,h('div',{class:'fbslot','aria-live':'polite'},st.msg));
+    if(st.ficha){
+      var p=POS[st.ficha];
+      var fk=Object.keys(st.placed).filter(function(k){return st.placed[k]===st.ficha;})[0];
+      right.append(h('div',{class:'ficha'},
+        h('h3',{},p.name),
+        h('dl',{},
+          h('div',{},h('dt',{},'Reporta a'),h('dd',{},p.rep)),
+          h('div',{},h('dt',{},'Función'),h('dd',{},p.name+' '+p.fn+'.')),
+          h('div',{},h('dt',{},'Responsabilidades'),h('dd',{},h('ul',{},p.resp.map(function(r){return h('li',{},r);})))),
+          h('div',{},h('dt',{},'Autoridad'),h('dd',{},p.auth))),
+        h('div',{class:'actions'},fk?h('button',{type:'button',class:'btn ghost',onclick:function(){delete st.placed[fk];st.ficha=null;st.msg=null;st.done=st.done;render();}},'Quitar del organigrama'):null)));
+    }
+    host.replaceChildren(left,right);
+    below.replaceChildren();
+    if(remaining().length===0){
+      var lines=[];
+      lines.push('Director de Operaciones');
+      function nm(id){return st.placed[id]?POS[st.placed[id]].name:'(vacío)';}
+      lines.push('  '+nm('ger'));
+      lines.push('    '+nm('jd'));lines.push('      '+nm('cd1'));lines.push('      '+nm('cd2'));
+      lines.push('    '+nm('ji'));lines.push('      '+nm('ci1'));lines.push('      '+nm('ci2'));
+      lines.push('    '+nm('dev'));lines.push('      '+nm('ap'));
+      lines.push('    '+nm('an'));lines.push('    '+nm('au'));
+      var txt=lines.join('\n');
+      var pre=h('pre',{},txt);
+      var copyMsg=h('span',{class:'count'},'');
+      var copy=h('button',{type:'button',class:'btn ghost',onclick:function(){
+        try{navigator.clipboard.writeText(txt).then(function(){copyMsg.textContent='Copiado';},function(){copyMsg.textContent='Selecciona el texto y cópialo.';});}
+        catch(e){copyMsg.textContent='Selecciona el texto y cópialo.';}
+      }},'Copiar organigrama');
+      below.append(fb(st.mistakes===0?'ok':'part','Organigrama completo',
+        'Colocaste los 11 puestos y descartaste los 3 ajenos. '+(st.mistakes===0?'Sin errores.':'Intentos fallidos: '+st.mistakes+'. Los errores te ayudaron a ver qué función corresponde a cada nivel.')+' Para tu evidencia, dibuja este organigrama e incluye la ficha de cada puesto (reporta a, función, responsabilidades, autoridad).'),
+        pre,h('div',{class:'actions'},copy,copyMsg));
+    }
+  }
+  render();
+  v.append(exWrap('m5','Motores del Norte S.A.','Compra materia prima, refacciones, EPP, servicios, equipos y transporte. Cuenta con Producción, Calidad, Almacén, Finanzas, Recursos Humanos y Mantenimiento.',h('div',{class:'qset'},host,below)));
+  v.append(pager('m5'));
+  return v;
+}
+
+/* ---------- módulo 6: caso final ---------- */
+function renderM6(){
+  var v=h('div',{class:'view'});
+  v.append(vhead(6,'Caso final','La empresa consume 500 piezas al día, tiene 1,500 en inventario y el proveedor tarda 5 días. ¿Qué hace Compras?'));
+  v.append(lesson('Lo esencial',
+    '<p>Los problemas de abastecimiento rara vez son de una sola área. Compras debe ver el impacto en el negocio, no solo el precio.</p>'));
+  var host=h('div',{class:'qset'});
+  var set=makeSet('m6',4,host);
+  var p1=numEx({gen:function(){return mkDias(1500,500,5);},fixed:true,formula:'Días de inventario = inventario ÷ consumo diario. Faltante = lead time − días de inventario.',onSolved:set.hit});
+  var p2=multiQ({
+    prompt:'<b>Parte 2.</b> Existe un faltante potencial de 2 días. Marca las acciones razonables para Compras.',
+    options:[
+      {t:'Negociar una entrega parcial',ok:true,why:'Recibir una parte antes cubre los días críticos.'},
+      {t:'Solicitar transporte urgente',ok:true,why:'Reduce el tiempo de tránsito, con un costo que hay que comparar contra el paro.'},
+      {t:'Buscar un segundo proveedor',ok:true,why:'Reduce la dependencia de una sola fuente y puede entregar antes.'},
+      {t:'Revisar inventario en otra planta',ok:true,why:'Es material que ya existe dentro de la empresa.'},
+      {t:'Revisar un material sustituto con Ingeniería y Calidad',ok:true,why:'Puede ser una salida, siempre con aprobación técnica.'},
+      {t:'Escalar el riesgo a Dirección',ok:true,why:'Hay que decidir pronto y quizá aprobar costos extra.'},
+      {t:'Esperar al proveedor: el atraso no es asunto de Compras',ok:false,why:'Compras gestiona el abastecimiento y los riesgos de suministro.'},
+      {t:'Sustituir el material por uno más barato sin avisar a Calidad',ok:false,why:'Compras no debe cambiar especificaciones por precio sin Calidad.'}
+    ],
+    explain:'Compras actúa en varias frentes: parcialidades, transporte, segunda fuente, inventario interno, sustitutos aprobados y escalamiento.',
+    onSolved:set.hit
+  });
+  var p3=choiceQ({
+    prompt:'<b>Parte 3.</b> La línea fabrica 1,000 piezas por hora y deja $30 de utilidad por pieza. Un flete urgente de $5,000 evita una hora de paro. ¿Qué conviene?',
+    options:[
+      {t:'Pagar el flete',ok:true,why:'Una hora detenida deja de generar 1,000 × $30 = $30,000. Pagar $5,000 para evitarlo es racional.'},
+      {t:'No pagarlo: ahorrar siempre es lo correcto',ok:false,why:'Ahorrar $5,000 y perder $30,000 no es ahorro. Hay que ver el impacto en el negocio.'},
+      {t:'Decidir solo por el precio unitario de la pieza',ok:false,why:'El precio unitario no incluye el costo de detener la línea.'}
+    ],onSolved:set.hit
+  });
+  var p4=choiceQ({
+    prompt:'<b>Parte 4.</b> Si la línea llega a detenerse por falta de material, ¿de quién es la culpa?',
+    options:[
+      {t:'De Compras, siempre',ok:false,why:'Podría ser Compras, pero también Producción, Planeación, Almacén, el proveedor o Calidad.'},
+      {t:'Hay que revisar las causas en todas las áreas que intervinieron',ok:true,why:'Producción pudo aumentar consumo, Planeación cambiar el programa, Almacén reportar tarde, el proveedor incumplir, Compras ordenar tarde o Calidad rechazar. Por eso se habla de gestión integral del abastecimiento.'},
+      {t:'Del proveedor, siempre',ok:false,why:'El proveedor puede ser la causa, pero no es la única posible. Hay que revisar toda la cadena.'}
+    ],onSolved:set.hit
+  });
+  host.append(h('div',{class:'q'},h('p',{class:'q-prompt',html:'<b>Parte 1.</b> Calcula los días de inventario y el faltante potencial.'}),p1),p2,p3,p4);
+  v.append(exWrap('m6','Inventario en riesgo','Resuelve las cuatro partes del caso.',host));
+  v.append(h('div',{class:'lesson'},h('span',{class:'tag'},'Idea central'),h('p',{html:'Comprar no es conseguir un producto al menor precio. Es garantizar que la organización tenga lo que necesita, cuando lo necesita, en condiciones que permitan operar y generar valor.'})));
+  v.append(pager('m6'));
+  return v;
+}
+
+/* ---------- arranque ---------- */
+var hash=(location.hash||'').replace('#','');
+if(hash&&(hash==='home'||MODULES.some(function(m){return m.id===hash;})))cur=hash;
+draw();
+})();
+</script>
+
+</body></html>
